@@ -5,16 +5,22 @@
 **新建项目 ** create a new project
 
 #### 常用快捷键
-Alt + /   功能辅助键（代码提示）配置快捷键 file-setting-code
-sout  快速生成打印语句
-psvm  快速生成主方法
-Ctrl + /  快速添加单行注释B
-Ctrl + shift + /  快速添加多行注释
-Ctrl + Alt + L  格式化代码
-Ctrl + D  快速复制代码
-Alt + enter  导包
-Alt + F12  打开terminal
-shift + F6  修改名称（类名、包名、文件名、变//量名）
+
+| 快捷键             |                                                    |
+| ------------------ | -------------------------------------------------- |
+| Alt + /            | 功能辅助键（代码提示）配置快捷键 file-setting-code |
+| sout               | 快速生成打印语句                                   |
+| psvm               | 快速生成主方法                                     |
+| Ctrl + /           | 快速添加单行注释B                                  |
+| Ctrl + shift + /   | 快速添加多行注释                                   |
+| Ctrl + Alt + L     | 格式化代码                                         |
+| Ctrl + D           | 快速复制代码                                       |
+| Alt + enter        | 导包                                               |
+| Alt + F12          | 打开terminal                                       |
+| shift + F6         | 修改名称（类名、包名、文件名、变//量名）           |
+| Alt + insert       | 生成getter&setter方法                              |
+| Ctrl + Shift + F10 | 运行代码                                           |
+| Alt + Shift + F9   | debug                                              |
 
 #### 运算符
 
