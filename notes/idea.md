@@ -20,7 +20,12 @@
 | shift + F6         | 修改名称（类名、包名、文件名、变//量名）           |
 | Alt + insert       | 生成getter&setter方法                              |
 | Ctrl + Shift + F10 | 运行代码                                           |
-| Alt + Shift + F9   | debug                                              |
+| Alt + Shift + F9   | 选择文件debug                                      |
+| Shift + F9         | debug                                              |
+| Ctrl + F2          | 停止运行                                           |
+| Double Shift       | 搜索                                               |
+| Ctrl + Alt + v     | 快速补全返回值                                     |
+|                    |                                                    |
 
 #### 运算符
 

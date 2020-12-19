@@ -7,7 +7,7 @@
 | show databases;                               | 显示数据库列表   |
 | use database;                                 | 进入数据库       |
 | show tables;                                  | 显示数据库中的表 |
-| dest + 表名                                   | 查询表结构       |
+| desc + 表名                                   | 查询表结构       |
 | show create table 表名                        | 查看字符集       |
 | drop table if exists 表名                     | 删除表名         |
 | alert table 表名 rename to 新表名             | 表重命名         |
@@ -21,8 +21,8 @@
 | insert into 表名 values（值1，值n）               |            |
 | select * from stu                                 | 查询数据   |
 | delete from 表名 [where 条件]                     | 删除数据   |
-| SELECT * FROM 表名 WHERE name LIKE G%;            | 模糊查询   |
-| SELECT * FROM  表名 WHERE name IN ("sy", "ym");   | 查询多个值 |
+| select * from 表名 where name like G%;            | 模糊查询   |
+| select * from  表名 where name in ("sy", "ym");   | 查询多个值 |
 |                                                   |            |
 |                                                   |            |
 |                                                   |            |
