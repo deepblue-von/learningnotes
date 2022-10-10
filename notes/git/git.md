@@ -1,4 +1,4 @@
-### ``git
+### git
 
 mkdir  folder    创建文件夹
 
@@ -83,6 +83,20 @@ git config --global user.email 24736743@qq.com   #邮箱
 git remote add origin ssh                 配置远程仓库(origin 别名)
 
 git push -u origin master                  把代码提交到远程仓库   
+
+**出现fatal: 'origin' does not appear to be a git repository问题时**
+
+```git
+git remote -v：                        查看远程仓库详细信息，可以看到仓库名称
+
+git remote remove orign：              删除orign仓库（如果把origin拼写成orign，删除错误名称仓库）
+
+git remote add origin ssh：            重新添加远程仓库地址
+
+gti push -u origin master：            提交到远程仓库的master主干
+```
+
+
 
 #### clone命令
 
