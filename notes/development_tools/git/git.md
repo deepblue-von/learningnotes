@@ -183,10 +183,10 @@ git remote remove orign
 ```git
 # 把代码提交到远程仓库 
 git push 远程别名 本地分支
-git push -u origin master   
+git push -u origin master 
 
-# 填写-u之后，下次提交可简写为
-git push
+# 把本地代码提交到远程指定分支上
+git push 远程别名 本地分支:远程分支
 ```
 
 
