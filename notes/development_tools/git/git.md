@@ -1,6 +1,8 @@
-## git
+# git
 
+**==分布式版本控制工具==**
 
+## git基本操作
 
 ### 初始化本地仓库
 
@@ -62,11 +64,17 @@ git log
 
 ```
 
-### 版本穿梭
+#### git commit操作以及退出日志编辑状态
+
+刚进去时发现怎么也输入都没反应，是因为此时vim编辑器处于不可编辑状态，输入字母 `c` 可以进入编辑状态，这个时候就可以修改注释信息啦 ~
+
+修改完之后按`esc`键退出编辑状态，再按大写`ZZ`就可以保存退出vim编辑器。
+
+## 版本穿梭
 
 本地仓库保存了所有提交的版本，所以可以放心穿梭而不用担心丢失信息
 
-==本地仓库靠head指针来调整版本==
+==本地仓库靠head指针调整指向的分支内容，（不同分支指向不同版本内容）==
 
  ![image-20221031115533594](git.assets/image-20221031115533594.png)
 
@@ -84,30 +92,6 @@ git reset --hard 历史版本号
 ```
 
 
-
-### git命令
-
-|command| means|
-|---|---|
-|  |                                             |
-|  |  |
-|  |  |
-|  |  |
-|  |  |
-| git commit  file | 将更改记录提交到本地库(备注信息，Esc， :wq) |
-|  |  |
-| git commit -m "提交信息" | 提交暂存区所有文件到本地仓库 |
-|  |  |
-| git checkout file | 恢复本地仓库内容到工作区                    |
-|  |  |
-| git commit -m '第二次提交' hello.txt | 提交时添加备注信息 |
-| git reset head hello.txt | 将本地库的内容写到暂存区 |
-| git remote add origin  ssh | 配置远程仓库 |
-| git config -l | 查看配置 |
-| git branch | 查看本地所有分支 |
-| git branch -r | 查看远程所有分支 |
-|  |  |
-|  |  |
 
 ### git分支中常用指令
 
@@ -142,13 +126,139 @@ $ git push origin --delete [branch-name]
 $ git branch -dr [remote/branch]
 ```
 
-### git配置
 
+
+
+
+## 远程仓库
+
+
+
+### ==工作原理：==
+
+**1. 团队内协作**
+
+
+
+![image-20221031133553114](git.assets/image-20221031133553114.png)
+
+
+
+
+
+**2. 跨团队协作**
+
+![Git跨团队协作_你的代码没bug的博客-CSDN博客](git.assets/2020020311302374.png)
+
+
+
+### 在远程创建一个仓库并将本地仓库关联到远程仓库
+
+```git
+# 配置远程仓库(origin 别名，可以起别的名字)
+git remote add origin ssh                
+git remote add 别名 远程地址     
+
+# 查看远程仓库信息
+git remote -v
+
+# 删除关联的远程仓库（只是删除关联，并没有删库）
+git remote remove orign
 ```
 
+
+
+**1. 创建仓库：**
+
+![image-20221031135146034](git.assets/image-20221031135146034.png)
+
+**2. 关联仓库：**
+
+![image-20221031135249393](git.assets/image-20221031135249393.png)
+
+
+
+### 推送本地仓库代码到远程仓库
+
+```git
+# 把代码提交到远程仓库 
+git push 远程别名 本地分支
+git push -u origin master   
+
+# 填写-u之后，下次提交可简写为
+git push
 ```
 
-### linux命令
+
+
+### 拉取远程仓库的代码到本地仓库
+
+```git
+# 直接拉取远程代码并合并到本地
+git pull 远程别名 远程分支
+
+# git pull相当于下面两条
+git fetch
+git merge
+```
+
+### 克隆远程代码
+
+==克隆代码不需要登陆账号==
+
+```git
+git clone ssh 
+```
+
+**clone会做三件事：**
+
+1. 完整的把远程库下载到本地
+2. 创建origin远程地址别名
+3. 初始化本地库
+
+
+
+
+
+## 团队内协作
+
+**1. 邀请合作伙伴**
+
+![image-20221031142423665](git.assets/image-20221031142423665.png)
+
+
+
+![image-20221031142548642](git.assets/image-20221031142548642.png)
+
+**2. 接受邀请**
+
+获得邀请函之后，登录自己的github，在地址栏复制并搜索-->点击接受
+
+![image-20221031142926377](git.assets/image-20221031142926377.png)
+
+
+
+然后就可以推送代码到远程库了
+
+
+
+
+
+## 跨团队协作
+
+
+
+**1. 找到别人的项目，点击fork,改完之后点击pull request**
+
+![image-20221031143941899](git.assets/image-20221031143941899.png)
+
+
+
+**2. 本团队可以在pull request中看到其他人的拉取请求**
+
+
+
+## linux命令
 
 | command | means                                                        |
 | ------- | ------------------------------------------------------------ |
@@ -168,53 +278,3 @@ $ git branch -dr [remote/branch]
 |         |                                                              |
 
 
-
-### 在远程创建一个仓库并将本地仓库关联到远程仓库
-
-git remote add origin ssh                 配置远程仓库(origin 别名)
-
-git push -u origin master                  把代码提交到远程仓库   
-
-**出现fatal: 'origin' does not appear to be a git repository问题时**
-
-```git
-git remote -v：                        查看远程仓库详细信息，可以看到仓库名称
-
-git remote remove orign：              删除orign仓库（如果把origin拼写成orign，删除错误名称仓库）
-
-git remote add origin ssh：            重新添加远程仓库地址
-
-gti push -u origin master：            提交到远程仓库的master主干
-```
-
-### 将本地仓库的内容上传到远程
-
-```git
-git add.                               将工作区所有文件添加到暂存区
-
-git commit -m "描述信息"                 将暂存取得文件添加到本地仓库
-
-git push                               将本地仓库文件提交到远程仓库
-```
-
-
-
-#### clone
-
-git clone ssh 
-
-clone会做三件事：
-
-1. 完整的把远程库下载到本地
-2. 创建origin远程地址别名
-3. 初始化本地库
-
-#### 拉取代码
-
-git pull origin master     // 相当于git fetch 和git merge
-
-#### git commit操作以及退出日志编辑状态
-
-刚进去时发现怎么也输入都没反应，是因为此时vim编辑器处于不可编辑状态，输入字母 `c` 可以进入编辑状态，这个时候就可以修改注释信息啦 ~
-
-修改完之后按`esc`键退出编辑状态，再按大写`ZZ`就可以保存退出vim编辑器。
