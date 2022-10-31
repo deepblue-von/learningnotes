@@ -1,23 +1,105 @@
-### git
+## git
 
-mkdir  folder    创建文件夹
 
-vim  file             创建文件
 
-#### git命令
+### 初始化本地仓库
+
+==右键-->git bash here==
+
+```git
+# 在当前目录初始化一个git本地仓库
+git init
+```
+
+![image-20221031114533090](git.assets/image-20221031114533090.png)
+
+**执行操作后在learningnotes目录下生成一个.git文件夹**
+
+
+
+### 配置提交者信息
+
+==--golbal在电脑的该用户所有仓库都用同样的配置信息==
+
+名称和邮箱都可以随便填，与远程仓库和github没有任何关系
+
+```git
+git config --global user.name "kuangshen"  #名称
+git config --global user.email 24736743@qq.com   #邮箱
+```
+
+
+
+### git基本命令
+
+```git
+# 显示工作区和暂存区的状态
+git status
+
+# 将文件添加到暂存区
+git add  文件名.后缀
+
+# 将工作区所有文件添加到暂存区
+git add .
+
+# 从工作区和索引中删除文件
+git rm  file
+
+# 将指定文件从暂存区提交到本地仓库
+git commit -m "提交信息"  文件名.后缀
+
+# 将暂存区所有文件提交到本地仓库
+git commit -m "提交信息"
+
+# 将暂存区的文件删除（不删除工作区）
+git rm --cached  file
+
+# 查看版本信息
+git reflog
+
+# 查看完整版本信息
+git log
+
+```
+
+### 版本穿梭
+
+本地仓库保存了所有提交的版本，所以可以放心穿梭而不用担心丢失信息
+
+==本地仓库靠head指针来调整版本==
+
+ ![image-20221031115533594](git.assets/image-20221031115533594.png)
+
+```git
+# 查看版本号
+git reflog
+
+```
+
+![image-20221031114016073](git.assets/image-20221031114016073.png)
+
+```git
+# 穿梭会历史版本
+git reset --hard 历史版本号
+```
+
+
+
+### git命令
 
 |command| means|
 |---|---|
-| git init | 在当前目录初始化一个git本地仓库 |
-| git status | 显示工作区和暂存区的状态 |
-| git add  file | 将文件提交到暂存区 |
-| git rm  file | 从工作区和索引中删除文件 |
-| git rm --cached  file | 将暂存区的文件删除（工作区还有） |
+|  |                                             |
+|  |  |
+|  |  |
+|  |  |
+|  |  |
 | git commit  file | 将更改记录提交到本地库(备注信息，Esc， :wq) |
-| git commit -m "提交信息"  文件名 | 将暂存区提交到本地仓库 |
-| git reflog | 查看版本信息 |
-| git log | 查看完整版本信息 |
-| git checkout file | 恢复本地仓库内容到工作区 |
+|  |  |
+| git commit -m "提交信息" | 提交暂存区所有文件到本地仓库 |
+|  |  |
+| git checkout file | 恢复本地仓库内容到工作区                    |
+|  |  |
 | git commit -m '第二次提交' hello.txt | 提交时添加备注信息 |
 | git reset head hello.txt | 将本地库的内容写到暂存区 |
 | git remote add origin  ssh | 配置远程仓库 |
@@ -27,7 +109,14 @@ vim  file             创建文件
 |  |  |
 |  |  |
 
-#### git分支中常用指令
+### git分支中常用指令
+
+**分支的好处**
+
++ 同时并行推进多个功能开发，提高开发效率
+
++ 各个分支在开发过程中，如果一个分支开发失败，不会对其他分支有任何影响，失败的分支删除重新开始即可
++ ![image-20221031120240704](git.assets/image-20221031120240704.png)
 
 ```git
 # 列出所有本地分支
@@ -53,14 +142,13 @@ $ git push origin --delete [branch-name]
 $ git branch -dr [remote/branch]
 ```
 
-#### git配置
+### git配置
 
 ```
-git config --global user.name "kuangshen"  #名称
-git config --global user.email 24736743@qq.com   #邮箱
+
 ```
 
-#### linux命令
+### linux命令
 
 | command | means                                                        |
 | ------- | ------------------------------------------------------------ |
@@ -81,7 +169,7 @@ git config --global user.email 24736743@qq.com   #邮箱
 
 
 
-#### 在远程创建一个仓库并将本地仓库关联到远程仓库
+### 在远程创建一个仓库并将本地仓库关联到远程仓库
 
 git remote add origin ssh                 配置远程仓库(origin 别名)
 
