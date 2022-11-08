@@ -13,6 +13,8 @@
 | Ctrl + t      | 插入表格       |
 | Shift + Tab   | 跳出无序列表   |
 | shift + Enter | 列表换行       |
+| shift + f12   | 审查元素       |
+|               |                |
 |               |                |
 |               |                |
 |               |                |

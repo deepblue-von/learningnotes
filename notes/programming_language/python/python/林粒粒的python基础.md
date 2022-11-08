@@ -1,6 +1,6 @@
-## 安装python 和pycharm
+# 安装python 和pycharm
 
-### 安装python
+## 安装python
 
 网址： www.python.org
 
@@ -15,13 +15,13 @@ cmd 窗口输入 python检查是否安装及python的版本
 输入where python查看只能装路径
 ```
 
-### 安装pycharm
+## 安装pycharm
 
 <img src="林粒粒的python基础.assets/8815db5e32cfc88f3b686cd0f588012.jpg" alt="8815db5e32cfc88f3b686cd0f588012" style="zoom:50%;" />
 
 ==直接下一步，勾选上图两个方框，第一个时快捷方式，第二个是.py文件默认打开方式==
 
-### pycharm配置python环境
+## pycharm配置python环境
 
 ![image-20220918112344751](林粒粒的python基础.assets/image-20220918112344751.png)
 
@@ -35,9 +35,9 @@ cmd 窗口输入 python检查是否安装及python的版本
 
 ==第三步中只要找到python.exe的安装位置，点击ok即可==
 
-## print
+# print
 
-### 基础输出
+## 基础输出
 
 ```python
 # venv文件夹是该项目的虚拟环境
@@ -47,7 +47,7 @@ print("Dad!")  # 单引号双引号都可以
 
 ```
 
-### 输出字符串
+## 输出字符串
 
 ```python
 # python读一行解释一行，所以不能随便换行
@@ -65,7 +65,7 @@ print("""尽道隋亡为此河，
 print(36, 37, 29, sep="=", end=".")
 ```
 
-## 变量
+# 变量
 
 ```python
 # 变量名只能用数字、字母、下滑线，但不能数字打头，不能用空格，不能用引号包裹
@@ -76,9 +76,9 @@ greet = "你好，吃了吗？"
 print(greet + "张三")
 ```
 
-##  运算
+#  运算
 
-### 数学运算
+## 数学运算
 
 math库官方文档：https://docs.python.org/zh-cn/3/library/math.html
 
@@ -93,7 +93,7 @@ print((-b + (b ** 2 - 4 * a * c) ** (1/2)) / (2 * a))
 print((-b - math.sqrt(b ** 2 - 4 * a * c)) / (2 * a))
 ```
 
-### 运算符
+## 运算符
 
 **1. 成员运算符**
 
@@ -126,9 +126,7 @@ print(a is not b)
 
 
 
-
-
-## 注释
+# 注释
 
 ```python
 # 单个#表示注释
@@ -137,7 +135,7 @@ print(a is not b)
 
 ```
 
-## 数据类型
+# 数据类型
 
 ```python
 len("hello")  # 求字符串的长度
@@ -165,7 +163,7 @@ print(type(n))
 id(s)
 ```
 
-## python交互模式
+# python交互模式
 
 1. 在cmd中输入python
 2. ![image-20220918174345630](林粒粒的python基础.assets/image-20220918174345630.png)
@@ -174,7 +172,7 @@ id(s)
 
 
 
-## input
+# input
 
 ```python
 input("这里是给用户的一些提示：")
@@ -188,9 +186,9 @@ user_BMI = user_weight / (user_height) ** 2
 print("您的BMI值为：" + str(user_BMI))
 ```
 
-## 条件语句
+# 条件语句
 
-### 单层条件
+## 单层条件
 
 ==if下可以写多行代码，但是要保证同样的缩进，否则出错==
 
@@ -205,7 +203,7 @@ else:
     print("为了自个儿小命，还是别打了！")
 ```
 
-### 嵌套条件语句
+## 嵌套条件语句
 
 ```python
 # 如果第一个elif满足将不会继续执行同一级的elif语句
@@ -237,7 +235,9 @@ else:
 
 
 
-##  列表list
+#  列表list
+
+## 创建与操作列表
 
 ```python
 shopping_list = []  # 一个方括号代表一个列表
@@ -277,7 +277,7 @@ print(sorted_price)
 
 ```
 
-### 倒序获取列表元素
+## 倒序获取列表元素
 
 ```python
 # 倒序获取所有元素
@@ -294,7 +294,7 @@ for item in list02[::-1]
 
 
 
-### 复制列表
+## 复制列表
 
 **在不使用任何索引的情况下，创建原列表的副本，并将副本赋给friend_foods**
 
@@ -316,7 +316,7 @@ friend_foods = my_foods # 行不通，这里两个变量指向的是同一个列
 
 
 
-### 列表推导式(列表解析)
+## 列表推导式(列表解析)
 
 ==对现有的列表进行操作，生成新的列表==
 
@@ -348,9 +348,26 @@ animal_doctor = [animal for animal in animal_park if animal != 'Cat' and animal 
 print(animal_doctor)  # ['Rabbit', 'Turtle', 'Kangaroo']
 ```
 
+## 二维列表
+
+**用for循环拿到每一行**
+
+```python
+map = [
+    [2, 0, 0, 2],
+    [4, 4, 2, 2],
+    [2, 4, 0, 4],
+    [0, 0, 2, 2],
+]
+
+# 打印每一行
+for line in map:
+    print(line)
+```
 
 
-### 方法和函数
+
+## 方法和函数
 
 | 方法                           | 函数               |
 | ------------------------------ | ------------------ |
@@ -402,7 +419,7 @@ len(a)
 
 
 
-### 语句
+## 语句
 
 ```python
 # 用del 语句删除列表中的元素
@@ -413,7 +430,7 @@ print(color)
 
 
 
-### 字符串转换成大写
+## 字符串转换成大写
 
 ==列表的值是可变的，int, char, str 等是不可变的==
 
@@ -433,7 +450,7 @@ print(shopping_list)  # ["键盘", "硬盘", "电竞椅"]
 
 
 
-### 列表切片
+## 列表切片
 
 ```python
 seq = [7, 2, 3, 7, 5, 6, 0, 1]
@@ -442,7 +459,23 @@ seq[-3:] # 倒数第三个元素开始向到最后一个元素
 
 ```
 
-### 列表转字符串.join
+==**注：**==**（切片使用来定位的）**
+
+**1. 切片在读取时会生成一个新的列表**
+
+```python
+list_merge = line[::-1]
+```
+
+**2. 切片在写的时候不会生成新的列表**
+
+```python
+line[::-1] = list_merge
+```
+
+
+
+## 列表转字符串.join
 
 ```python
 list01 = [str(item) for item in range(10)]
@@ -452,7 +485,7 @@ str01 = "".join(list01)
 print(str01)
 ```
 
-### 字符串转列表.split
+## 字符串转列表.split
 
 ```python
 list01 = "102939212".split("")
@@ -460,7 +493,7 @@ list01 = "102939212".split("")
 
 
 
-## 元组tuple
+# 元组tuple
 
 **元组是由逗号标识的。如果要定义一个只包含一个元素的元组，必须在这个元素后面加逗号**
 
@@ -507,7 +540,7 @@ tup5 = ('foo', 'bar') * 4
 print(tup5)  # ('foo', 'bar', 'foo', 'bar', 'foo', 'bar', 'foo', 'bar')
 ```
 
-### 拆分元组
+## 拆分元组
 
 ```python
 tup = (4, 5, 6)
@@ -536,7 +569,7 @@ print(a, b)  # 2
 print(rest)  # [3, 4, 5]
 ```
 
-### tuple方法
+## tuple方法
 
 ```python
 # tuple方法
@@ -544,7 +577,7 @@ a = (1, 2, 2, 2, 3, 4, 2)
 print(a.count(2))  # 4
 ```
 
-### tuple作为函数返回值
+## tuple作为函数返回值
 
 ```python
 import math 
@@ -566,11 +599,11 @@ print(r)  # (151.96152422706632, 70.0)
 
 返回值是一个tuple，但是，在语法上，返回一个tuple可以省略括号，而多个变量可以同时接收一个tuple,按位置赋给对应的值，所以，python的函数返回多值，其实就是返回一个tuple，但写起来方便
 
-### tuple和列表可以相互转换
+## tuple和列表可以相互转换
 
 
 
-## 字典dict
+# 字典dict
 
 ==由键值对组成==
 
@@ -596,7 +629,7 @@ contacts = {("张伟", 23): "15000000000",
 
 
 
-### 增加或删除键值对
+## 增加或删除键值对
 
 ==字典是可变的，可以增加或删除键值对==
 
@@ -629,28 +662,28 @@ else:
     print("当前本词典收录的词条数为：" + str(len(slang_dict)) + "条。")
 ```
 
-### 字典的方法
+## 字典的方法
 
-#### 获取所有的键
+### 获取所有的键
 
 ```python
 temperature_dict = {"111":36.4, "112":36.6, "113":36.6 }
 temperature_dict.keys() 
 ```
 
-#### 获取所有的值
+### 获取所有的值
 
 ```python
 temperature_dict.values()
 ```
 
-#### 获取键值对
+### 获取键值对
 
 ```python
 temperature_dict.items()
 ```
 
-#### 使用get()来访问值
+### 使用get()来访问值
 
 ```python
 alien_1 = {'color': 'green', 'speed': 'medium'}
@@ -663,7 +696,7 @@ point_value = alien_1.get('point', 'No point value assigned')
 print(point_value)
 ```
 
-### 字典推导式
+## 字典推导式
 
 ```python
 dict01 = {}
@@ -677,7 +710,7 @@ print(dict02)
 
 
 
-## for循环
+# for循环
 
 ==for 变量名 in 可迭代对象==
 
@@ -692,7 +725,7 @@ for y in range(1, 31, 2):
     print(y, end=" ")        
 ```
 
-## while循环
+# while循环
 
 ```python
 list1 = ["你", "好", "吗", "兄", "弟"]
@@ -730,9 +763,9 @@ else:
 print("您输入的数字平均值为" + str(result))
 ```
 
-## 迭代器和生成器
+# 迭代器和生成器
 
-### 迭代器
+## 迭代器
 
 ==迭代器有两个基本的方法：**iter()** 和 **next()**。==
 
@@ -749,7 +782,7 @@ print(a)
 print(next(a))  # 输出迭代器的下一个元素
 ```
 
-### 生成器
+## 生成器
 
 ==生成器是一个返回迭代器的函数，只能用于迭代操作，更简单点理解生成器就是一个迭代器。==
 
@@ -775,9 +808,9 @@ print(next(data))
 
 
 
-## 字符串
+# 字符串
 
-### 字符串常用方法
+## 字符串常用方法
 
 ```python
 name = "ada lovelace"
@@ -801,7 +834,7 @@ print(favorite_language.strip())
 
 
 
-### 原始字符串
+## 原始字符串
 
 ```python
 a = r"\name\rank"
@@ -809,7 +842,7 @@ a = r"\name\rank"
 
 
 
-###  格式化字符串
+##  格式化字符串
 
 **1. format方法格式化字符串**
 
@@ -893,7 +926,7 @@ print(s)
 
 
 
-## 函数 don't repeat yourself
+# 函数 don't repeat yourself
 
 ==语法：==
 
@@ -941,7 +974,7 @@ print(list02)
 
 
 
-### 无返回值函数
+## 无返回值函数
 
 如果没有return语句，函数执行完毕后也会返回结果，只是结果为None。return None可以简写为return
 
@@ -953,7 +986,7 @@ def calculate_sector(central_angle, radius):
 calculate_sector(160, 30)
 ```
 
-### 有返回值函数
+## 有返回值函数
 
 ```python
 def calculate_BMI(weight, height):
@@ -990,7 +1023,7 @@ print(median([69, 124, -32, 27, 217]))
 
 ```
 
-### 空函数
+## 空函数
 
 如果想定义一个什么事也不做的函数，可以使用pass语句
 
@@ -1012,7 +1045,7 @@ if age >= 18:
 
 
 
-### 定义默认参数的函数
+## 定义默认参数的函数
 
 + ==定义默认参数要牢记一点：默认参数必须指向不变对象==
 + 我们在编写程序时，如果可以设计一个不变对象，那就尽量设计成不变对象。
@@ -1028,7 +1061,7 @@ if age >= 18:
 + 命名的关键字参数是为了限制调用者可以传入的参数名，同时可以提供默认值。
 + 定义命名的关键字参数在没有可变参数的情况下不要忘了写分隔符`*`，否则定义的将是位置  参数。
 
-#### 实参
+### 实参
 
 ```python
 # 定义一个函数
@@ -1071,7 +1104,7 @@ dict01 = {"a": 1, "c": 3, "d": 4, "b": 2}
 fun01(**dict01)
 ```
 
-#### 形参
+### 形参
 
 ```python
 def fun01(a=0, b=0, c=0, d=0):
@@ -1088,13 +1121,13 @@ fun01(b=2, c=3)
 
 ## 作用域
 
-在函数内部可以访问全局变量，但是要修改全局变量需要使用 ==globle==
+在函数内部可以访问全局变量，但是要修改全局变量需要使用 ==globle==关键字
 
 
 
-## python内置函数
+# python内置函数
 
-### range()
+## range()
 
 ~~~python
 # range(start, stop, step)
@@ -1103,7 +1136,7 @@ fun01(b=2, c=3)
 # step：步长，默认为1。例如：range（0， 5） 等价于 range(0, 5, 1)
 ~~~
 
-### list()
+## list()
 
 ```python
 # list函数
@@ -1116,7 +1149,7 @@ print(gen)  # range(0, 10)
 print(list(gen))  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 ```
 
-### isinstance() 函数
+## isinstance() 
 
 isinstance() 函数来判断一个对象是否是一个已知的类型，类似 type()。
 
@@ -1135,9 +1168,35 @@ isinstance(a, int)
 isinstance(a, (str, int, list))
 ```
 
+## strip() 和 split() 
+
+### strip()
+
+**函数原型**
+
+声明：s为字符串，rm为要删除的字符序列
+
+> s.strip(rm)    删除s字符串中开头、结尾处，位于 rm删除序列的字符
+
+> s.lstrip(rm)   删除s字符串中开头处，位于 rm删除序列的字符
+
+> s.rstrip(rm)   删除s字符串中结尾处，位于 rm删除序列的字符
+
+**注意：**
+
++ 当rm为空时，默认删除空白符（包括'\n', '\r', '\t', ' ')
+
++ 这里的rm删除序列是只要边（开头或结尾）上的字符在删除序列内，就删除掉。
+
+例如，
+
+### split()
+
+​    split函数通常是对字符串进行操作，操作完之后的结果，变成了一个字符串列表。split函数按照括号内给定的字符进行分割，如果括号内是空的，也就是没有指定具体的分割内容的话，那么就默认的按照空格进行分割
 
 
-## 引入模块
+
+# 引入模块
 
 ==ctrl 点击函数名查看源代码==
 
@@ -1159,9 +1218,53 @@ print(mean([69, 124, -32, 27, 217]))
 
 ==在终端pip install 库名安装第三方库==
 
-## 面向对象编程
+# 面向对象(Object Oriented)
 
-### 命名方法
+## 概述
+
+面向过程：关注过程（例如：购物车）"干"
+
+​					选择菜单-->购买-->打印商品信息-->创建订单-->...-->结算-->...
+
+面向对象：关心解决问题的人    "找"
+
+**OOA面向对象的分析**
+
+**OOD面向对象的设计**
+
++ 从设计角度： 先有对象后又类
+
++ 从编码角度： 先有类后又对象
+
+## 类和对象
+
+1. 类： 一个==抽象的概念==，即生活中的”==类别==“
+2. 对象：类的==具体实例==，即归属于某个类别的”==个体==“ 
+
+```oython
+类：类别
+对象： 个体
+		类与类的区别： 行为不同
+		对象与对象的区别： 数据不同
+语法: 
+    class 类名： 
+   		 def \_\_init\_\_(self, 参数)：
+   		 # 数据成员
+  		  self.数据1 = 参数
+    # 行为成员
+   		 def  方法名称()：
+    		方法体
+```
+
+
+
+## 内存图
+
+
+
+![image-20221031201832345](林粒粒的python基础.assets/image-20221031201832345.png)
+
+## 命名方法
 
 **1.下划线命名法**
 
@@ -1183,9 +1286,7 @@ print(mean([69, 124, -32, 27, 217]))
 
 ​	PermentData
 
-### 可爱猫猫类
-
-
+## 可爱猫猫类
 
 ```python
 # 可爱猫猫类
@@ -1209,116 +1310,415 @@ print(f"小猫{cat1.name}的年龄是{cat1.age}岁，花色是{cat1.color}")
 cat1.think("现在去抓沙发还是去撕纸箱")
 ```
 
-### 学生类
-
-```python
-# 定义一个学生类
-# 要求：
-# 1. 属性包括学生姓名、学号，以及语数英三科成绩
-# 2. 能够设置学生某科目的成绩
-# 3. 能够打印出该学生的所有科目成绩
-class Student:
-    def __init__(self, name, student_id):
-        self.name = name
-        self.student_id = student_id
-        # 如果每个对象都有一样的初始值，那么我们就不需要从参数去获取，可以直接定义
-        self.grades = {"语文": 0, "数学": 0, "英语": 0}
-
-    def set_grade(self, course, grade):
-        if course in self.grades:
-            self.grades[course] = grade
-
-    def print_grades(self):
-        print(f"学生{self.name}(学号：{self.student_id})的成绩为：")
-        for course in self.grades:
-            print(f"{course}:{self.grades[course]}")
-
-
-chen = Student("小陈", "202211")
-chen.set_grade("语文", 92)
-chen.set_grade("数学", 94)
-chen.print_grades()
-
-zeng = Student("小曾", "202212")
-zeng.set_grade("数学", 95)
-print(chen.name)
-print(zeng.grades)
-```
-
-### 方法\__init__()
+## 构造方法\__init__()
 
 + 类中的函数称为方法
-+ \__init__()是一个特殊方法，当根据CuteCat类创建新实例时，python都会运行它
++ \__init__()是一个特殊方法(也叫构造函数)，当根据CuteCat类创建新实例时，python都会运行它
 + 开头和结束的两个下划线，避免与默认方法和普通方法发生冲突
 + 形参self必不可少，==每个与实例相关联的方法调用都自动传递实参self，它是一个指向实例本身的引用，让实例能够访问类中的属性和方法 。==
 + ==self为前缀的变量可供类中的所有方法使用==
 + self.name 获取与形参name相关联的值，并将其赋给变量name，然后该变量被关联到当前创建的实例
 
-### 修改属性值的方法
+## 实例变量
 
-**1. 直接通过实例进行修改**
-**2. 通过方法进行设置**
-**3. 通过放法进行递增**
+1. 语法：
+
+   定义：对象.变量名 `self.name = name`
+
+   调用：对象.变量名`self.name`
+
+2. 每个对象保存一份，通过对象地址访问实例变量
+3. 作用：描述所有对象共有的数据
+
+## 实例方法
+
+1. 语法：
+
+   定义： def 方法名称(self, 参数列表)
+
+   ​					方法体
+
+   调用： 对象地址.实例方法名(参数列表)
+
+   ​			不建议通过类名访问实例方法
+
+2. 说明：
+
+   至少有一个形参self,绑定调用这个方法的对象
+
+   无论创建多少对象，方法只保存一份，并且被所有对象共享
+
+3. 
+
+## 类变量
+
+1. 语法：
+
+   + 定义： 在类中，方法外定义变量
+
+     ​				class  类名：
+
+     ​						变量名 = 表达式
+
+   + 调用： 类名.变量名
+
+     不建议通过对象访问类变量
+
+2. 说明：
+   + 存储在类中
+   + 只存储一份，被所有对象共享
+
+3. 作用：描述所有对象的公有数据
+
+![image-20221103154156448](林粒粒的python基础.assets/image-20221103154156448.png)
+
+## 类方法
+
+1. 语法：
+
+   + 定义： 
+
+     @classmethod
+
+     def 方法名称(cls, 参数列表)：
+
+     ​		方法体
+
+   + 调用：类名.方法名(参数列表)
+
+     不建议通过对象访问类方法
+
+2. 说明：
+
+   + 至少有一个形参， 第一个形参用于绑定类，一般命名为‘cls’
+   + 使用@classmethod修饰的目的是调用类方法时可以隐式传递类
+   + 类方法中不能访问实例变量(因为类方法没有实例对象的地址self)
+
+```python
+class Wife:
+
+    count = 0
+
+    def __init__(self, name, age):
+        self.name = name
+        self.age = age
+        Wife.count += 1
+
+    @classmethod
+    def count_wife(cls):
+        print("一共有", cls.count, "个老婆", end="")
+
+
+Wife("石原里美", 20)
+Wife("户田惠梨香", 21)
+
+Wife.count_wife()
+print("\n", Wife.count)
+```
+
+
+
+## 静态方法
+
+==将函数移到类中（为了迎合面向对象的思想）==
+
+**总结:**
+
+​		实例方法：操作对象的变量
+
+​		类方法：操作类变量
+
+​		静态方法：既不操作对象的变量也不操作类变量
 
 ```python
 """
-    Car类
+    在二维列表中获取指定位置，指定方向，指定数量的元素
+"""
+
+list01 = [
+    ["00", "01", "02", "03"],
+    ["10", "11", "12", "13"],
+    ["20", "21", "22", "23"],
+]
+
+"""
+    在二维列表中，获取13位置，向左，3个元素
+    在二维列表中，获取22位置，向上，2个元素
+    在二维列表中，获取03位置，向下，2个元素
 """
 
 
-class Car:
-    """一次模拟汽车的简单尝试"""
-
-    def __init__(self, make, model, year):
-        """初始化描述汽车属性。"""
-        self.make = make
-        self.model = model
-        self.year = year
-        self.odometer_reading = 0
-
-    def get_descriptive_name(self):
-        """返回整洁的描述信息"""
-        long_name = f"{self.year} {self.make} {self.model}"
-        return long_name.title()
-
-    def read_odometer(self):
-        """打印一条指出汽车里程的消息"""
-        print(f"This car has {self.odometer_reading} miles on it")
-
-    def update_odometer(self, mileage):
+class Vector:
+    """
+        向量类
+    """
+    def __init__(self, x, y):
         """
-            将里程表读数设置为指定的值
-            禁止将里程表读书往回调
+        初始化一个向量
+        :param x:
+        :param y:
         """
-        if mileage >= self.odometer_reading:
-            self.odometer_reading = mileage
+        self.x = x
+        self.y = y
+
+    @staticmethod
+    def vector_left():
+        """
+        向左的一个向量
+        :return: 一个向左的单位向量
+        """
+        return Vector(0, -1)
+
+    @staticmethod
+    def vector_up():
+        return Vector(-1, 0)
+
+    @staticmethod
+    def vector_down():
+        return Vector(1, 0)
+
+    @staticmethod
+    def get_elements(target, position, orientation, num):
+        """
+        在二维列表中获取指定位置，指定方向，指定数量的元素
+        :param target: 要操作的列表
+        :param position: 初始位置
+        :param orientation: 移动方向
+        :param num: 获取元素的个数
+        :return: 符合要求的列表
+        """
+        list02 = []
+        for i in range(num):
+            position.x = position.x + orientation.x
+            position.y = position.y + orientation.y
+            result = target[position.x][position.y]
+            list02.append(result)
+        return list02
+
+
+vector01 = Vector(1, 3)
+vector02 = Vector(2, 2)
+vector03 = Vector(0, 3)
+
+list03 = Vector.get_elements(list01, vector01, Vector.vector_left(), 3)
+print(list03)
+list04 = Vector.get_elements(list01, vector02, Vector.vector_up(), 2)
+print(list04)
+list05 = Vector.get_elements(list01, vector03, Vector.vector_down(), 2)
+print(list05)
+
+```
+
+
+
+## 封装
+
+1. 从数据角度(封装数据），将一些基本数据类型复合成一个自定义类型
+
+   好处：更符合人类的思考方式
+
+   ​			将数据与对数据的操作整合在一起
+
+2. 从行为角度(封装行为)，向类外提供必要的功能，隐藏实现的细节
+
+   好处：以“模块化“的方式进行编程
+
+   ​			可以集中精力设计、组织、指挥多个类协同工作
+
+3. <font color="red">设计角度讲</font>
+
+   + 分而治之
+
+     > 将一个大的需求分解为许多类，每个类处理一个独立的功能
+     >
+     > 拆分好处：便于分工， 便于复用，可扩展性强
+
+   + 变则疏之
+
+     > 变化的地方独立封装，避免影响其他类
+
+   + 高内聚
+
+     > 类中各个方法都在完成一项任务(单一职责的类)
+
+   + 低耦合
+
+     > 类与类的关联性与依赖度要低(每个类独立)，让一个类的改变，尽量不会影响其他类
+
+### 私有成员
+
+1. 作用：无需向类外提供的成员，可以通过私有化进行屏蔽
+
+2. 做法：命名使用双下划线开头
+
+3. 本质：障眼法，实际也可以访问
+
+   ​			私有成员的名称被修改为：\_类名\_\_成员名，可以通过\_类名\_\_成员名访问
+
+### 使用方法封装变量
+
+==一般不用这种方法，而采用下一节的property对象方法==
+
+```python
+class Enemy:
+    def __init__(self, name, hit_point, damage, defense):
+        self.name = name
+        self.set_hit_point(hit_point)
+        self.defense = defense
+
+    def set_hit_point(self, hit_point):
+        if 100 < hit_point < 200:
+            self._hit_point = hit_point
         else:
-            print("You can't roll back an odometer")
+            raise ValueError("请输入100-200之间的值！")
 
-    def increment_odometer(self, miles):
-        """将里程表读书增加指定的量"""
-        self.odometer_reading += miles
+    def get_hit_point(self):
+        return self._hit_point
+
+enemy01 = Enemy("1号", 101, 40, 30)
+print(enemy01.__dict__)
+```
+
+### 属性property封装变量
+
+==这个依然是一个过度版，最终用下一个版本==
+
+```python
+class Enemy:
+    def __init__(self, name, hit_point, damage, defense):
+        self.name = name
+        self.hit_point = hit_point
+        self.defense = defense
+
+    def set_hit_point(self, hit_point):
+        if 100 < hit_point < 200:
+            self._hit_point = hit_point
+        else:
+            raise ValueError("请输入100-200之间的值！")
+
+    def get_hit_point(self):
+        return self._hit_point
+
+    # 属性 property对象拦截对hit_point类变量的读写操作
+    hit_point = property(get_hit_point, set_hit_point)
+
+    
+enemy01 = Enemy("1号", 101, 40, 30)
+enemy01.hit_point = 150
+print(enemy01.__dict__)
+```
+
+![image-20221107142221364](林粒粒的python基础.assets/image-20221107142221364.png)
 
 
-my_new_car = Car("audi", "a4", 2019)
-print(my_new_car.get_descriptive_name())
 
-# 直接修改属性的值
-my_new_car.odometer_reading = 23
-my_new_car.read_odometer()
+### 属性@property
 
-# 通过方法修改属性值
-my_new_car.update_odometer(20)
-my_new_car.read_odometer()
+​			共开的实例变量，缺少逻辑验证。私有的实例变量与两个公开的方法相结合，又使调用略显复杂。==而属性可以将两个方法的使用方式像操作变量一样方便。==
 
-# 通过方法对属性的值进行递增
-my_used_car = Car("subaru", "outback", 2015)
-print(my_used_car.get_descriptive_name())
+​		**定义：**
 
-my_used_car.update_odometer(23500)
-my_used_car.read_odometer()
+​				@property
 
-my_used_car.increment_odometer(100)
-my_used_car.read_odometer()
+​				def name(self):
+
+​						return self.__name
+
+
+
+​				@name.setter
+
+​				def name(self, name):
+
+​						self.__name = name
+
+​		**调用：**
+
+​				对象.属性名 =数据
+
+​				变量= 对象.属性名
+
+​		**说明：**
+
+​				> 通常两个公开的属性，保护一个私有变量
+
+​				> @property负责读取，@属性名.setter负责写入
+
+​				> 只写：属性名 = property(None, 写入方法名)
+
+```python
+class Enemy:
+    def __init__(self, name, hp, damage, defense):
+        self.name = name
+        self.hp = hp
+        self.damage = damage
+        self.defense = defense
+
+    @property  # 创建property对象，只负责拦截读取操作
+    def hit_point(self):
+        return self.__hp
+
+    @hit_point.setter  # 只负责拦截写操作
+    def hit_point(self, value):
+        if 100 < value < 200:
+            self.__hp = value
+        else:
+            raise ValueError("请输入100-200之间的值！")
+
+    # 属性 property对象拦截对hit_point类变量的读写操作
+
+
+enemy01 = Enemy("1号", 101, 40, 30)
+enemy01.hit_point = 150
+print(enemy01.__dict__)
+```
+
+
+
+# 文件操作
+
+**1. 基础方法：**
+
++ f.read()返回的是一个字符串
+
++ 一次调用会读取所有文件，再次调用会返回空字符串
++ read(param)  param表示一次读多少字节，下一次调用接着读取
+
+```python
+f = open(".\data.txt", "r", encoding="utf-8")
+# 将文件的所有内容以字符串形式返回
+content = f.read()
+print(content)
+f.close()
+```
+
+**2. 使用with关键字读取文件：**
+
++ 使用with在缩进结束时，自动关闭文件
+
+```python
+with open(".\data.txt", "r", encoding="utf-8") as f:
+    content = f.read()
+    print(content)
+```
+
++ f.readline()读取一行，并返回一个字符串
+
+```python
+with open(".\data.txt", "r", encoding="utf-8") as f:
+    # readline()会读取换行符
+    print(f.readline(), end="")
+    print(f.readline())
+```
+
++ f.readlines()读取所有行，并返回一个列表
+
+```python
+with open(".\data.txt", "r", encoding="utf-8") as f:
+    # 读取每一行返回一个列表
+    print(f.readlines())
+    lines = f.readlines()
+    for line in lines:
+        print(line)
 ```
 

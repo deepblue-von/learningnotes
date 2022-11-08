@@ -1,68 +1,134 @@
-## 创建的ndarray
+## 创建ndarray
+
+**1. 导入numpy**
 
 ```python
 import numpy as np
-# 创建ndarray
+```
+
+**2. 创建ndarray**
+
+```python
 data1 = [6, 7.5, 8, 0, 1]
 print(data1)
 arr1 = np.array(data1)
 print(arr1)
+```
 
-# 嵌套序列
-data2 = [[1, 2, 3, 4], [5, 6, 7, 8]]
-print(data2)
-arr2 = np.array(data2)
-print(arr2)
+**3. ndarray的属性**
 
-# ndim返回的是数组的维度，返回的只有一个数
++ ndim返回的是数组的维度
+
+```python
 print(arr2.ndim)
-# shape返回各维度大小的一个元组
+```
+
++ shape返回各维度大小的一个元组
+
+```python
 print(arr2.shape)
-# 返回数组数组的数据类型
+```
+
++ dtype返回数组的数据类型
+
+```python
 print(arr2.dtype)
+```
 
-# zeros和ones分别可以创建指定长度或形状的全0或全1数组
-# empty可以创建一个没有任何具体值的数组
+**4. 创建特殊数组**
+
++ zeros和ones分别可以创建指定长度或形状的全0或全1数组
+
+```python
 arr3 = np.zeros(10)
-print(arr3)
-# 创建一个三行六列的数组，每一个元素都是0
 np.zeros((3, 6))
-# 改变数组的形状
-np.reshape((2,9))
-np.empty((2, 3, 2))
+```
 
-# arange是Python内置函数range的数组版
++ empty可以创建一个没有任何具体值的数组
+
+```python
+np.empty((2, 3, 2))
+```
+
+**5. 改变数组的形状**
+
+==数组大小没有发生变化==
+
+```python
+np.reshape((2,9))
+```
+
+**6. arange是Python内置函数range的数组版**
+
+```python
 np.arange(15)
 print(np.arange(15))  # [ 0  1  2  3  4  5  6  7  8  9 10 11 12 13 14]
 print(list(range(10)))  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
-
 ```
+
 
 ![img](https://camo.githubusercontent.com/a5bfc7ddb3084e72bcfc9057d81524960a6b490d7309043bc547670ff40c149d/687474703a2f2f75706c6f61642d696d616765732e6a69616e7368752e696f2f75706c6f61645f696d616765732f373137383639312d373861623131663637653730373761362e706e673f696d6167654d6f6772322f6175746f2d6f7269656e742f7374726970253743696d61676556696577322f322f772f31323430)
 
 ## ndarray的数据类型
 
-```python
-#dtype（数据类型）是一个特殊的对象，它含有ndarray将一块内存解释为特定数据类型所需的信息
-arr1 = np.array([1, 2, 3], dtype=np.float64)
-print(arr1.dtype)
+**1. dtype（数据类型）**
 
-# 通过ndarray的astype方法明确地将一个数组从一个dtype转换成另一个dtype
-arr = np.array([1, 2, 3, 4, 5])
-print(arr.dtype)
-float_arr = arr.astype(np.float64)
-print(float_arr.dtype)
+==是一个特殊的对象，它包含了ndarray需要为某一种类型数据所申明的内存块的信息==
+
+```python
+arr1 = np.array([1, 2, 3], dtype=np.float64)
+print(arr1.dtype)  # float64
 ```
 
-## numpy数组运算
+**2. astype**
+
+==通过ndarray的astype方法明确地将一个数组从一个dtype转换成另一个dtype==
+
+```python
+arr = np.array([1, 2, 3, 4, 5])
+print(arr.dtype)  # int32
+float_arr = arr.astype(np.float64)
+print(float_arr.dtype)  # float64
+```
+
+**numpy的数据类型**
+
+![img](numpy基础.assets/7178691-2f2d7406a8bc076c.png)
+
+![img](numpy基础.assets/7178691-5cc31115615737b7.png)
+
+## numpy数组运算⭐️
 
 + 大小相等的数组之间的任何算术运算都会将运算应用到元素级
+
+```python
+arr = np.array([[1., 2., 3.], [4., 5., 6.]])  # [[1. 2. 3.]
+print(arr)                                    # [4. 5. 6.]]
+
+arr1 = arr * arr          #[4. 5. 6.]]
+print(arr1)               #[16. 25. 36.]]
+```
+
 + 数组与标量的算术运算会将标量值传播到各个元素
+
+```python
+arr3 = 1 / arr        # [[1.         0.5        0.33333333]
+print(arr3)           # [0.25       0.2        0.16666667]]
+```
+
 + 大小相同的数组之间的比较会生成布尔值数组
 
+```python
+arr4 = np.array([[0., 4., 1.], [7., 2., 12.]])
+print(arr4 > arr)
+
+"""
+[[False  True False]
+ [ True False  True]]
+"""
+```
+
 ## 基本的索引和切片
-
-
 
 ### 一维数组
 
@@ -76,17 +142,20 @@ print((arr[5:8]))
 arr_slice = arr[5:8]
 
 ```
-**2.将一个标量值赋值给一个切片时（如arr[5:8]=12），该值会自动传播**
+**2.将一个标量值赋值给一个切片时（如arr[5:8]=12），该值会==自动传播==**
+
 ```python
 print(arr_slice)  # [12 12 12]
 arr_slice[1] = 12345
 ```
 **3.修改arr_slice中的值，变动也会体现在原始数组arr中**
+
 ```python
 print(arr_slice)  # [   12 12345    12]
 print(arr)  # [    0     1     2     3     4    12 12345    12     8     9]
 ```
-**4.切片[:]会给数组中所有值赋值**
+**4.切片[:]引用数组的所有值**
+
 ```python
 arr_slice[:] = 64
 print(arr)
@@ -95,13 +164,14 @@ print(arr)
 ### 二维数组
 
 **1.  二维数组创建**
-==在二维数组中，各索引位置上的元素不再是标量，而是一维数组==
+	 **在二维数组中，各索引位置上的元素不再是标量，而是一维数组**
 
 ```python
 arr2d = np.array([[1, 2, 3], [4, 5, 6], [7, 8, 9]])
 print(arr2d[2]) # [7 8 9]
 ```
 **2.获取数组中的单个元素**
+
 ```python
 arr2d[0][2] # 3
 aee2d[0, 2] # 3
@@ -137,7 +207,7 @@ print(arr3d[0]) # [[1 2 3]
                 # [4 5 6]]
 ```
 
-## 切片索引
+## 数组的切片索引
 
 ### 一维数组
 
@@ -163,6 +233,22 @@ arr2d[:2, 1:] = 0  # [[1 0 0]
                    # [4 0 0]
                    # [7 8 9]]
 ```
+
+**3. 切片和索引混合**
+
++ 行索引加列切片
+
+  ```python
+  arr2d[1, :2]  # [4, 5]
+  ```
+
++ 行切片加列索引
+
+  ```python
+  arr2d[:2, 2]  # [3, 6]
+  ```
+
+  
 
 ==对切片的赋值也会被扩散到整个选取==
 

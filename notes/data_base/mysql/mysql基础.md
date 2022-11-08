@@ -1,9 +1,134 @@
-### mysql
+
+
+# mysql
+
+## 安装
+
+[http://www.mysql.com](http://www.mysql.com)
+
+安装过程较复杂，参考视频教程安装
+
+### 安装错误
+
+**删除已经安装好的mysql**==要慎重==
+
+```mysql
+sc delete mysql
+```
+
+### 配置环境变量
+
+### 查mysql版本
+
+```mysql
+mysql --version
+```
+
+## mysql基本使用
+
+### 启动mysql服务
+
+```mysql 
+net start mysql
+```
+
+### 关闭mysql服务
+
+```mysql
+net stop mysql
+```
+
+### 连接到mysql服务
+
+```mysql
+# 方法一
+mysql -u root -p
+root
+
+# 方法二 p和密码之间没有空格
+mysql -u root -proot
+
+# 连接指定的 ip和端口  
+# 127.0.0.1也可以写localhost默认本机；
+# P端口号要大写，（不写的话默认）3306
+mysql -h 127.0.0.1 -P 3306 -u root -proot
+```
+
+### 使用mysql服务中的mysql数据库
+
+```mysql
+# 使用mysql中的mysql数据库
+use mysql;
+```
+
+### 修改mysql数据库的密码
+
+```mysql
+# 修改密码
+update user set authentication_string=password('root')where user='root' and Host='localhost';
+
+# 刷新权限,刷新权限之后才能生效
+flush privileges
+```
+
+### 退出数据库
+
+```mysql
+quit
+```
+
+
+
+# 可视化软件
+
+
+
+## navicat使用
+
+### 安装
+
+官网安装，直接下一步
+
+### 基本使用
+
+![image-20221108110319939](mysql基础.assets/image-20221108110319939.png)
+
+### 四个不要乱动的数据库
+
+![image-20221108102750280](mysql基础.assets/image-20221108102750280.png)
+
+
+
+## sqlyog使用
+
+同[navicat](# navicat使用)
+
+
+
+# mysql的三层结构
+
+DBMS(数据库管理系统): 监听3306端口
+
+
+
+![image-20221108111149691](mysql基础.assets/image-20221108111149691.png)
+
+
+
+#  sql 语句
+
+### sql语句分类
+
+> DDL: 数据定义语句[creat 表，库...]
+>
+> DML: 数据操作有语言[增加 insert, 修改 update, 删除 delete]
+>
+> DQL: 数据查询语句[select]
+>
+> DCL: 数据控制语句[管理数据库: 比如用户权限 grant revoke] 
 
 | mysql基本使用                                 |                  |
 | --------------------------------------------- | ---------------- |
-| net start mysql                               | 启动数据库       |
-| mysql -u root -p root                         | 登录数据库       |
 | show databases;                               | 显示数据库列表   |
 | use database;                                 | 进入数据库       |
 | show tables;                                  | 显示数据库中的表 |
