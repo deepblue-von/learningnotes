@@ -117,7 +117,7 @@ DBMS(数据库管理系统): 监听3306端口
 
 #  sql 语句
 
-### sql语句分类
+## sql语句分类
 
 > DDL: 数据定义语句[creat 表，库...]
 >
@@ -126,6 +126,51 @@ DBMS(数据库管理系统): 监听3306端口
 > DQL: 数据查询语句[select]
 >
 > DCL: 数据控制语句[管理数据库: 比如用户权限 grant revoke] 
+
+## 创建数据库
+
+1. 创建默认数据库
+
+```mysql
+create database [if not exists] db_name
+```
+
+2. 删除数据库
+
+```mysql
+drop database [if exists] db_name
+```
+
+3. 创建一个使用utf8字符集的数据库
+
+```mysql
+create database db_name character set utf8
+```
+
+4. 创建一个使用utf8字符集，并带校对规则的数据库
+
+```mysql
+# 校对规则utf8_bin区分大小写，默认utf8_general_ci不区分大小写
+create database db_name character set utf8 collate utf8_bin
+```
+
+## 查询数据库
+
+1. 查看当前数据库服务器中的所有数据库
+
+```mysql
+show databases
+```
+
+2. 查看前面创建的数据库的定义信息
+
+```mysql
+show create database db_name
+```
+
+
+
+
 
 | mysql基本使用                                 |                  |
 | --------------------------------------------- | ---------------- |

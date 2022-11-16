@@ -31,7 +31,7 @@ cmd 窗口输入 python检查是否安装及python的版本
 
 ![image-20220918113132871](林粒粒的python基础.assets/image-20220918113132871.png)
 
-![image-20220918113257833](林粒粒的python基础.assets/image-20220918113257833.png)
+<img src="林粒粒的python基础.assets/image-20220918113257833.png" alt="image-20220918113257833" style="zoom: 67%;" />
 
 ==第三步中只要找到python.exe的安装位置，点击ok即可==
 
@@ -1151,12 +1151,12 @@ print(list(gen))  # [0, 1, 2, 3, 4, 5, 6, 7, 8, 9]
 
 ## isinstance() 
 
-isinstance() 函数来判断一个对象是否是一个已知的类型，类似 type()。
+isinstance() 函数来判断一个==对象==是否是一个已知的类型，类似 type()。
 
-==isinstance() 与 type() 区别：==
+**isinstance() 与 type() 区别：**
 
-- type() 不会认为子类是一种父类类型，不考虑继承关系。
-- isinstance() 会认为子类是一种父类类型，考虑继承关系。
+- type() 不会认为子类对象是一种父类类型，不考虑继承关系。
+- isinstance() 会认为子类对象是一种父类类型，考虑继承关系。
 
 如果要判断两个类型是否相同推荐使用 isinstance()。
 
@@ -1167,6 +1167,12 @@ a = 2
 isinstance(a, int)
 isinstance(a, (str, int, list))
 ```
+
+## idsubclass()
+
+判断一个类型是否属于一个类型
+
+
 
 ## strip() 和 split() 
 
@@ -1194,9 +1200,27 @@ isinstance(a, (str, int, list))
 
 ​    split函数通常是对字符串进行操作，操作完之后的结果，变成了一个字符串列表。split函数按照括号内给定的字符进行分割，如果括号内是空的，也就是没有指定具体的分割内容的话，那么就默认的按照空格进行分割
 
+## zip()
+
+zip()函数用于将可迭代对象作为参数，将对象中的元素打包成一个个元组，然后返回由这些元组组成的列表
+
+```python
+a = [1, 2, 3]
+b = [4, 5, 6]
+
+# 返回一个对象<zip object at 0x000001D843F457C0>
+zipped = zip(a, b)
+print(zipped)
+# 可以将该对象转换为列表 [(1, 4), (2, 5), (3, 6)]
+zipped = list(zipped)
+print(zipped)
+```
+
 
 
 # 引入模块
+
+## 引入模块的方法
 
 ==ctrl 点击函数名查看源代码==
 
@@ -1217,6 +1241,27 @@ print(mean([69, 124, -32, 27, 217]))
 ==pypi.org可以对第三方库进行搜索==
 
 ==在终端pip install 库名安装第三方库==
+
+### 如果引发冲突
+
+```python
+import statistics as st
+```
+
+
+
+## if \_\_name\_\_=='\_\_main\_\_':
+
+```python
+if __name__=='__main__':
+    test()
+```
+
+当我们在命令行运行hello模块文件时，python解释器把一个特殊变量`__name__`置为`__main__`,而如果在其他地方导入该模块时，`__name__`是模块名，if判断将失败，因此，这种if测试可以让一个模块通过命令行运行时执行一些额外的代码，最常见的就是运行测试
+
+
+
+
 
 # 面向对象(Object Oriented)
 
@@ -1258,13 +1303,13 @@ print(mean([69, 124, -32, 27, 217]))
 
 
 
-## 内存图
+### 内存图
 
 
 
-![image-20221031201832345](林粒粒的python基础.assets/image-20221031201832345.png)
+<img src="林粒粒的python基础.assets/image-20221031201832345.png" alt="image-20221031201832345" style="zoom:33%;" />
 
-## 命名方法
+### 命名方法
 
 **1.下划线命名法**
 
@@ -1286,7 +1331,7 @@ print(mean([69, 124, -32, 27, 217]))
 
 ​	PermentData
 
-## 可爱猫猫类
+### 可爱猫猫类
 
 ```python
 # 可爱猫猫类
@@ -1310,7 +1355,7 @@ print(f"小猫{cat1.name}的年龄是{cat1.age}岁，花色是{cat1.color}")
 cat1.think("现在去抓沙发还是去撕纸箱")
 ```
 
-## 构造方法\__init__()
+### 构造方法\__init__()
 
 + 类中的函数称为方法
 + \__init__()是一个特殊方法(也叫构造函数)，当根据CuteCat类创建新实例时，python都会运行它
@@ -1319,7 +1364,7 @@ cat1.think("现在去抓沙发还是去撕纸箱")
 + ==self为前缀的变量可供类中的所有方法使用==
 + self.name 获取与形参name相关联的值，并将其赋给变量name，然后该变量被关联到当前创建的实例
 
-## 实例变量
+### 实例变量
 
 1. 语法：
 
@@ -1330,7 +1375,7 @@ cat1.think("现在去抓沙发还是去撕纸箱")
 2. 每个对象保存一份，通过对象地址访问实例变量
 3. 作用：描述所有对象共有的数据
 
-## 实例方法
+### 实例方法
 
 1. 语法：
 
@@ -1350,7 +1395,7 @@ cat1.think("现在去抓沙发还是去撕纸箱")
 
 3. 
 
-## 类变量
+### 类变量
 
 1. 语法：
 
@@ -1370,9 +1415,9 @@ cat1.think("现在去抓沙发还是去撕纸箱")
 
 3. 作用：描述所有对象的公有数据
 
-![image-20221103154156448](林粒粒的python基础.assets/image-20221103154156448.png)
+<img src="林粒粒的python基础.assets/image-20221103154156448.png" alt="image-20221103154156448" style="zoom: 50%;" />
 
-## 类方法
+### 类方法
 
 1. 语法：
 
@@ -1418,7 +1463,7 @@ print("\n", Wife.count)
 
 
 
-## 静态方法
+### 静态方法
 
 ==将函数移到类中（为了迎合面向对象的思想）==
 
@@ -1608,7 +1653,7 @@ enemy01.hit_point = 150
 print(enemy01.__dict__)
 ```
 
-![image-20221107142221364](林粒粒的python基础.assets/image-20221107142221364.png)
+<img src="林粒粒的python基础.assets/image-20221107142221364.png" alt="image-20221107142221364" style="zoom: 50%;" />
 
 
 
@@ -1673,6 +1718,459 @@ enemy01.hit_point = 150
 print(enemy01.__dict__)
 ```
 
+### \_\_slots\_\_
+
+正常情况下，当我们定义了一个class实例后，我们可以给该实例绑定任何属性和方法，这就是动态语言的灵活性。
+
+```python
+class Student:
+    pass
+s = Student()
+s.name = "kiko"
+print(s.name)  # kiko
+```
+
+使用`__slots__`之后，限制class实例只能添加指定的属性。
+
+```python
+class Student:
+    __slots__=('name', "age")
+    
+s = Student()
+s.score = 90  # 报错
+```
+
+
+
+## 软件设计流程
+
+
+
+<img src="林粒粒的python基础.assets/image-20221108223316457.png" alt="image-20221108223316457" style="zoom:50%;" />
+
+
+
+## MVC架构
+
+<img src="林粒粒的python基础.assets/image-20221109152547487.png" alt="image-20221109152547487" style="zoom: 67%;" />
+
+## 继承
+
+### 定义
+
+1. 重用现有类的功能与概念，并在此基础上进行扩展==统一概念==
+2. 子类直接具有父类的成员(共性)还可以扩展新功能
+
+### 继承方法
+
++ 子类对象可以调用子类成员，也可以调用父类成员
++ 父类可以调用父类成员，不能调用子类成员
+
+### 继承数据
+
++ 子类若没有构造函数，使用父类的
++ 子类若具有构造函数，将覆盖父类的，此时必须通过super()函数调用父类的构造函数，以确保父类实例变量被正常创建
+
+
+
+
+
+<img src="林粒粒的python基础.assets/image-20221111171802090.png" alt="image-20221111171802090" style="zoom:50%;" />
+
+```python
+class Vehicle:
+
+    def __init__(self, brand, speed):
+        self.brand = brand
+        self.speed = speed
+
+
+class Electrocar(Vehicle):
+
+    def __init__(self, brand, speed, battery_capacity, power_of_charge):
+        super().__init__(brand, speed)
+        self.battery_capacity = battery_capacity
+        self.power_of_charge = power_of_charge
+
+
+v01= Vehicle("奔驰", 230)
+print(v01.brand)
+e01 = Electrocar("比亚迪", 120, 15000, 220)
+print(e01.brand)
+print(e01.power_of_charge)
+```
+
+>==优点==：~~一种代码复用方式~~ 
+>
+>==缺点==：耦合度高，父类变化，直接影响子类
+
+### 多继承
+
+同名方法的继承顺序(MRO,  Mrthond Resolution Order)
+
+```python
+class D(A, B):
+    
+    def func(self):
+        self.func01()
+        
+d = D()
+# 查看继承顺序
+d.mro()
+```
+
+
+
+## 多态
+
+### 定义
+
+​		父类的同一种动作或者行为，在不同的子类上有不同的实现
+
+### 作用
+
+1. 继承将相关概念的共性进行抽象，多态在共性的基础上，体现类型的个性化(一个行为有不同实现)
+2. 增强程序扩展性，体现开闭原则
+
+
+
+![老张去东北设计02](林粒粒的python基础.assets/老张去东北设计02.jpg)
+
+**图形管理器**
+
+```python
+class GraphManager:
+
+    def __init__(self):
+        self.__graphics = []
+
+    def add_graph(self, graph):
+        self.__graphics.append(graph)
+
+    def get_total_area(self):
+        for item in self.__graphics:
+            print(f"{item.__class__.__name__}", "的面积为：", item.calculate_area())
+
+
+class Graph:
+
+    def calculate_area(self):
+        raise NotImplementedError
+
+
+class Circle(Graph):
+
+    pi = 3.14
+
+    def __init__(self, radius):
+        self.radius = radius
+
+    def calculate_area(self):
+        return Circle.pi * self.radius ** 2
+
+
+class Rectangle(Graph):
+
+    def __init__(self, length, width):
+        self.length = length
+        self.width = width
+
+    def calculate_area(self):
+        return self.length * self.width
+
+
+circle = Circle(5)
+rectangle = Rectangle(8, 9)
+graph_manager = GraphManager()
+graph_manager.add_graph(circle)
+graph_manager.add_graph(rectangle)
+graph_manager.get_total_area()
+```
+
+
+
+### 重写
+
+子类实现了父类中的方法(方法名、参数)，在调用该方法的时候实际执行的是子类的方法
+
+```python
+class Things:
+
+    def damage(self):
+        # 如果子类没有该方法，报错
+        raise NotImplementedError
+```
+
+
+
+
+
+## 类与类的关系
+
+### 泛化
+
++ 子类与父类的关系，概念的复用，耦合度高
+
++ B类泛化A类，意味着B类是A类的一种
++ 做法：B类继承A类
+
+### 关联（聚合/组合）
+
++ 部分与整体的关系，佛南功能的复用，变化影响一个
++ A与B关联，意味着B是A的一部分
++ 做法：在A类中包含B类成员(将B做成一个实例变量)
+
+### 依赖
+
++ 合作关系，一种相对松散的协作，变化影响一个方法：
++ A类依赖B类，意味着A类的某些功能靠B类实现
++ 做法： B类型作为A类中方法的参数，并不是A的成员
+
+## 设计原则
+
+### 开闭原则
+
+Open Closed Principle
+
+对扩展开放，对修改关闭
+
+增加新功能，不改变原有代码
+
+
+
+### 类的单一职责(一个类的定义）
+
+Single Responsibility Principle
+
+一个类有且只有一个改变它的原因
+
+
+
+### 依赖倒置(依赖抽象)
+
+Dependency Inversion Principle
+
+客户端代码(调用的类)尽量依赖(使用)抽象的组件：
+
+抽象不要依赖具体
+
+抽象是稳定的，实现是多变的
+
+![老张去东北设计02](林粒粒的python基础.assets/老张去东北设计02-1668321861595.jpg)
+
+
+
+### 组合复用原则(复用的最佳实践)
+
+Composite Reuse Principle
+
+如果仅仅为了代码复用优先选择==组合==复用，而非继承复用
+
+组合的耦合性相对继承低
+
+![图形管理器](林粒粒的python基础.assets/图形管理器.jpg)
+
+### 里氏替换原则(继承后的重写，指导继承的设计)
+
+Liskov Substitution Principle
+
+父类出现的地方可以被子类替换，在替换后依然保持原功能
+
+子类要拥有父类的所有功能
+
+子类在重写父类方法时，尽量选择扩展重写，防止改变了功能
+
+```python
+class Employee:
+
+    def __init__(self, basic_salary):
+        self.basic_salary = basic_salary
+
+    def calculate_salary(self):
+        return self.basic_salary
+
+
+class Programmer(Employee):
+
+    def __init__(self, basic_salary, bonus):
+        super().__init__(basic_salary)
+        self.bonus = bonus
+
+    def calculate_salary(self):
+        return super().calculate_salary() + self.bonus
+```
+
+
+
+### 迪米特法则(类与类交互的原则)
+
+Law of Demeter
+
+不要和陌生人说话
+
+类与类交互时，在满足功能要求的基础上，传递的数据量越少越好，因为这样可能降低耦合度
+
+
+
+# 内置可重写函数
+
+python中，以双下划线开头，双下划线结尾的是系统定义的成员。我们可以在自定义类中进行重写，从而改变其行为。
+
+## `__str__()`
+
++ `__str__()`函数：将对象转换为字符串(对人友好)
+
+  ```python
+  class StudentModel:
+  
+      def __init__(self, name="", age=0, score=0, id=0):
+          self.name = name
+          self.age = age
+          self.score = score
+          self.id = id
+  
+      # 把对象变成字符串(随意格式)
+      def __str__(self):
+          return "我叫%s,编号是%d,年龄是%d,成绩是%d" % (self.name, self.id, self.age, self.score)
+      
+  s01 = StudentModel("张三", 27, 100, 101)
+  str01 = str(s01)
+  print(str01)
+  print(s01)
+  ```
+
+## `__repr__()`
+
++ `__repr__()`函数：将对象转换为字符串(解释器可识别的)
+
+  与eval()组合使用可以克隆一个对象
+
+```python
+class StudentModel:
+
+    def __init__(self, name="", age=0, score=0, id=0):
+        self.name = name
+        self.age = age
+        self.score = score
+        self.id = id
+
+    def __repr__(self):
+        return "StudentModel('%s', %d, %d, %d)" % (self.name, self.id, self.age, self.score)
+    
+# repr()返回python格式的字符串
+# eval根据字符串执行代码
+# 克隆对象
+s03 = eval(repr(s01))
+print(s03)
+print(type(s03))
+s03.name = "李四"
+```
+
+## 运算符重载
+
+```python 
+class Vector:
+
+    def __init__(self, x):
+        self.x = x
+
+    def __str__(self):
+        return "一维向量的分量是：%d" % self.x
+
+    def __add__(self, other):
+        return Vector(self.x + other)
+
+    def __mul__(self, other):
+        return Vector(self.x * other)
+```
+
+
+
+## 反向运算符重载
+
+重写`__iadd__`实现在原对象基础上的变化
+
+如果不重写`__iadd__`，一般会产生新对象
+
+```python
+class Vector:
+
+    def __init__(self, x):
+        self.x = x
+    
+    def __radd__(self, other):
+        return Vector(self.x + other)
+    
+print(2 + v1)
+```
+
+## 复合运算符重载
+
+```python
+class Vector:
+
+    def __init__(self, x):
+        self.x = x
+
+    def __str__(self):
+        return "一维向量的分量是：%d" % self.x
+
+    def __add__(self, other):
+        return Vector(self.x + other)
+    
+    def __iadd__(self, other):
+        self.x += other
+        return self
+    
+v1 = Vector(10)
+print(v1, id(v1))
+v1 += 5
+print(v1, id(v1))
+```
+
+## `__getitem__（）`
+
+**使用场景：**在定义类时，如果希望能按照键取类的值，则需要定义`__getitem__`方法
+
+**目的：**如果给类定义了`__getitem__`方法，则当按照键取值时，可以直接返回`__getitem__`方法执行的结果。
+
+```python
+class Fib():               
+    def __init__(self,start=0,step=1):
+        self.step=step
+        
+    #定性__getitem__函数，key为类Fib的键
+    def __getitem__(self, key): 
+            a = key+self.step
+            return a         
+ 
+s=Fib()
+s[1]  #返回2
+```
+
+## `__len__（）`
+
+如果一个类表现得像一个list，要获取有多少个元素，就需要用`len()`函数	
+
+要让`len()`函数正常工作类必须提供一个特殊的方法`__len__()`,它返回元素的个数
+
+只要正确实现了`__len__()`方法，就可以使用`len()`函数返回Student实例的长度
+
+```python
+class Student(object):
+
+    def __init__(self, *args):
+        self.names = args
+
+    def __len__(self):
+        print(type(self.names))
+        return len(self.names)
+
+
+student = Student("1号", "2号", "3号")
+print(len(student))
+```
+
 
 
 # 文件操作
@@ -1721,4 +2219,6 @@ with open(".\data.txt", "r", encoding="utf-8") as f:
     for line in lines:
         print(line)
 ```
+
+
 

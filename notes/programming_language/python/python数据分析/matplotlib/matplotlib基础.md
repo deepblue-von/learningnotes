@@ -99,3 +99,9 @@ plt.legend()
 
 ```
 
+## 保存图片
+
+```python
+plt.savefig("../image/multiple_feature.png")
+```
+
