@@ -1216,6 +1216,22 @@ zipped = list(zipped)
 print(zipped)
 ```
 
+## enumerate()
+
+enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列出数据和数据下标，一般用在 for 循环当中
+
+```python
+seq = ['one', 'two', 'three']
+	for i, element in enumerate(seq):
+	   print (i, element)
+
+0 one
+1 two
+2 three
+```
+
+
+
 
 
 # 引入模块
@@ -1223,6 +1239,10 @@ print(zipped)
 ## 引入模块的方法
 
 ==ctrl 点击函数名查看源代码==
+
+模块中以单下划线开头的属性为隐藏成员，不能通过from XXX import * 导入
+
+可以通过from XXX import _XXX导入
 
 ```python
 # 方法一
@@ -1250,16 +1270,95 @@ import statistics as st
 
 
 
-## if \_\_name\_\_=='\_\_main\_\_':
+
+
+## 模块变量
+
+### if \_\_name\_\_=='\_\_main\_\_':
 
 ```python
 if __name__=='__main__':
     test()
 ```
 
-当我们在命令行运行hello模块文件时，python解释器把一个特殊变量`__name__`置为`__main__`,而如果在其他地方导入该模块时，`__name__`是模块名，if判断将失败，因此，这种if测试可以让一个模块通过命令行运行时执行一些额外的代码，最常见的就是运行测试
+当我们在命令行运行hello模块文件时，python解释器把一个特殊变量`__name__`置为`__main__`,而如果在其他地方导入该模块时，`__name__`是模块名，if判断将失败，因此，这种if测试可以让一个模块通过命令行运行时执行一些额外的代码，最常见的就是==运行测试==
 
 
+
+### `__all__`
+
+定义可导出成员
+
+```python
+__all__ = ["fun01", "MyCalss"]
+```
+
+### `__doc__`
+
+可以通过该属性查看文档注释
+
+```python
+print(__doc__)
+```
+
+### `__file__`
+
+返回当前文件的绝对路径，从系统根目录开始
+
+```python
+print(__file__)
+```
+
+## 内置模块
+
+### time
+
+```python
+import time
+
+# 获取当前时间戳
+print(time.time())
+
+# 时间元组
+# 时间戳转换成时间元组
+print(time.localtime(1668605308.1960697))
+
+# 时间元组转换成时间戳
+tuple_time = time.localtime()
+print(time.mktime(tuple_time))
+
+# 时间元组-->str
+str_time01 = time.strftime("%y / %m / %d / %H:%M:%S", tuple_time)
+print(str_time01)
+
+# str --> 时间元组
+tuple_time = time.strptime(str_time01, "%y / %m / %d / %H:%M:%S")
+print(tuple_time)
+```
+
+### copy
+
+1. **b = a:** 赋值引用，a 和 b 都指向同一个对象。
+
+   ![image-20221206203140593](林粒粒的python基础.assets/image-20221206203140593.png)
+
+2. **b = a.copy():** 浅拷贝, a 和 b 是一个独立的对象，但他们的子对象还是指向统一对象（是引用）。
+
+   ![image-20221206203216796](林粒粒的python基础.assets/image-20221206203216796.png)
+
+3. **b = copy.deepcopy(a):** 深度拷贝, a 和 b 完全拷贝了父对象及其子对象，两者是完全独立的。
+
+   ![image-20221206203244048](林粒粒的python基础.assets/image-20221206203244048.png)
+
+# 包
+
+## `__init__.py`
+
+是包内必须存在的文件
+
+会在包加载时被自动调用
+
+可以配合`__all__`设置可导出的模块
 
 
 
@@ -1769,11 +1868,10 @@ s.score = 90  # 报错
 ### 继承数据
 
 + 子类若没有构造函数，使用父类的
+
 + 子类若具有构造函数，将覆盖父类的，此时必须通过super()函数调用父类的构造函数，以确保父类实例变量被正常创建
 
-
-
-
+  
 
 <img src="林粒粒的python基础.assets/image-20221111171802090.png" alt="image-20221111171802090" style="zoom:50%;" />
 
@@ -2171,7 +2269,105 @@ student = Student("1号", "2号", "3号")
 print(len(student))
 ```
 
+# 异常处理
 
+## 异常
+
+1. 定义： 运行时检测到的错误
+
+2. 现象：当异常发生时，程序不会再向下执行，而转到函数的调用语句
+
+3. 常见异常类型：
+
+   > 名称异常（NameError）:变量未定义
+   >
+   > 类型异常（TypeError）:不同类型数据进行运算
+   >
+   > 索引异常（IndexError）:超出索引范围
+   >
+   > 属性异常（AttributeError）:对象没有对应名称的属性
+   >
+   > 键异常（KeyError）:没有对应名称的键
+   >
+   > 未实现异常（NotImplementedError）:尚未实现的方法
+   >
+   > 异常基类Exception
+
+## 处理
+
+1. 语法：
+
+   try:
+
+   ​	可能触发异常的语句
+
+   except 错误类型1 [as 变量 1]：
+
+   ​		处理语句 1
+
+   except 错误类型2 [as 变量 2]：
+
+   ​		处理语句 2
+
+   except Exception [as 变量 3]:
+
+   ​		不是以上错误类型的处理语句
+
+   else: 
+
+   ​		未发生异常的语句
+
+   finally:
+
+   ​		无论是否发生异常的语句
+
+2. 作用：将程序由异常状态转为正常流程。
+
+3. 说明：
+
+   as 子句是用于绑定错误对象的变量，可以省略
+
+   except子句可以有一个或多个，用来捕获某种类型的错误。
+
+   else子句最多只能有一个。
+
+   finally子句最多只能有一个，如果没有except子句，必须存在。
+
+   如果异常没有被捕获到，会向上层(调用处)继续传递，直到程序终止运行。
+
+## raise语句
+
+1. 作用：抛出一个错误，让程序进入异常状态。
+
+2. 目的：在程序调用层数较深时，向主调函数传递错误信息要层层return 比较麻烦，所以人为抛出异常，可以直接传递错误信息。
+
+## 自定义异常
+
+1. 定义：   
+
+   class 类名Error(Exception):
+
+   ​       def __init__(self,参数):
+
+   ​           super().__init__(参数)
+
+   ​           self.数据 = 参数
+
+2. 调用：
+
+   try:
+
+   ​		….
+
+   ​		raise 自定义异常类名(参数)
+
+   ​		….
+
+​       except 定义异常类 as 变量名:
+
+​           变量名.数据
+
+3. 作用：封装错误信息
 
 # 文件操作
 
@@ -2218,6 +2414,9 @@ with open(".\data.txt", "r", encoding="utf-8") as f:
     lines = f.readlines()
     for line in lines:
         print(line)
+        
+        udp_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_DGRAM)
+        tcp_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
 ```
 
 

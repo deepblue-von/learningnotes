@@ -318,7 +318,6 @@ numbers.argmax()  # 4
 
 ```python
 import numpy as np
-
 numbers = np.arange(6).reshape(2,3)
 numbers
 ```
