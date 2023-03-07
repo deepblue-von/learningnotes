@@ -1,4 +1,4 @@
-# git
+## git
 
 **==分布式版本控制工具==**
 
@@ -255,6 +255,12 @@ git clone ssh
 
 
 **2. 本团队可以在pull request中看到其他人的拉取请求**
+
+## 连接时因为开着VPN访问失败
+
+```git
+git config --global http.sslVerify "false" 
+```
 
 
 
