@@ -3504,120 +3504,36 @@ func main() {
 
 # 18. 项目流程
 
-![image-20230107224037068](golang.assets/image-20230107224037068.png)
+## 项目需求分析
 
-```go
-type FamilyAccount struct {
-	key string
-	// 账余额
-	balance float64
-	// 每次收支的金额
-	money float64
-	// 每次收支的说明
-	note string
-	// 收支的详情使用字符串来记录
-	detail string
-	tag    string
-	flag   bool
-	// 声明一个变量，控制是否退出for循环
-	loop bool
-}
+1. 模拟实现基于文本界面的《客户信息管理软件》
+2. 该软件能够实现对客户对象的插入、修改和删除(用切片实现)，并能够打印客户明细表
 
-func NewFamilyAccount() *FamilyAccount {
-	return &FamilyAccount{
-		key:     "",
-		loop:    true,
-		balance: 10000.0,
-		money:   0.0,
-		note:    "",
-		flag:    false,
-		detail:  "收支\t账户金额\t收支金额\t说    明",
-		tag:     "",
-	}
-}
-func (account *FamilyAccount) showDetails() {
-	fmt.Println("----------------当前收支明细记录----------------")
-	if (*account).flag {
-		fmt.Println((*account).detail)
-	} else {
-		fmt.Println("当前没有收支信息！")
-	}
-}
+## 项目界面设计
 
-func (account *FamilyAccount) income() {
-	fmt.Println("本次收入金额:")
-	fmt.Scanln(&(*account).money)
-	(*account).balance += (*account).money
-	fmt.Println("本次收入说明:")
-	fmt.Scanln(&(*account).note)
-	(*account).detail += fmt.Sprintf("\n收入\t%v\t\t%v\t\t%v", (*account).balance, (*account).money, (*account).note)
-	fmt.Println((*account).detail)
-	(*account).flag = true
-}
-func (account *FamilyAccount) pay() {
-	fmt.Println("本次支出金额:")
-	fmt.Scanln(&(*account).money)
-	if (*account).money > (*account).balance {
-		fmt.Println("余额不足...")
-		// break
-		return
-	}
-	(*account).balance -= (*account).money
-	fmt.Println("本次支出说明:")
-	fmt.Scanln(&(*account).note)
-	(*account).detail += fmt.Sprintf("\n支出\t%v\t\t%v\t\t%v", (*account).balance, (*account).money, (*account).note)
-	fmt.Println((*account).detail)
-	(*account).flag = true
-}
+**主菜单界面**
 
-func (account *FamilyAccount) quit() {
-	for {
-		fmt.Println("是否要退出程序？ y/n")
-		fmt.Scanln(&(*account).tag)
-		if (*account).tag == "y" {
-			(*account).loop = false
-			break
-		} else if (*account).tag == "n" {
-			break
-		}
-	}
-}
+![image-20230307181728547](golang.assets/image-20230307181728547.png)
 
-// 给结构体绑定方法
-// 显示主菜单
-func (account *FamilyAccount) DisplayMenu() {
-	for {
-		fmt.Println("----------------家庭收支记账软件----------------")
-		fmt.Println("                 1 收支明细表")
-		fmt.Println("                 2 登记收入")
-		fmt.Println("                 3 登记支出")
-		fmt.Println("                 4 退出软件")
-		fmt.Println("请选择(1-4):")
 
-		fmt.Scanln(&(*account).key)
-		switch (*account).key {
-		case "1":
-			account.showDetails()
-		case "2":
-			account.income()
-		case "3":
-			account.pay()
-			break
-		case "4":
-			account.quit()
-		default:
-			fmt.Println("请输入正确选项")
-		}
-		if !(*account).loop {
-			break
-		}
-	}
-	fmt.Println("你退出了家庭记账软件的使用...")
-}
 
-```
+**添加用户界面**
 
-##  客户关系管理系统
+<img src="golang.assets/image-20230307181844761.png" alt="image-20230307181844761" style="zoom: 67%;" />
+
+**修改客户界面**
+
+<img src="golang.assets/image-20230307182124220.png" alt="image-20230307182124220" style="zoom:67%;" />
+
+**删除客户界面**
+
+<img src="golang.assets/image-20230307182202429.png" alt="image-20230307182202429" style="zoom:67%;" />
+
+**客户列表**
+
+<img src="golang.assets/image-20230307182253767.png" alt="image-20230307182253767" style="zoom:67%;" />
+
+## 客户关系管理框架图
 
 
 
@@ -4408,3 +4324,529 @@ func main() {
 
 
 
+# 21.文件
+
+## 文件基本介绍
+
+![image-20230314094653688](golang.assets/image-20230314094653688.png)
+
+`os.File`结构体封装了与文件相关的操作
+
+## 打开和关闭文件
+
+```go
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	file, err := os.Open("./poem.txt")
+	if err != nil {
+		fmt.Println("打开文件失败", err)
+	} else {
+		// os.ReadFile(file)
+		fmt.Printf("file=%v", file)
+	}
+	file.Close()
+}
+```
+
+## 带缓冲的Reader读文件
+
+读取文件的内容并显示在终端（带缓冲区的方式）,使用`os.Open, file.Close, bufio.NewReader()， reader.ReadString`函数和方法
+
+```go
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+)
+
+func main() {
+	file, err := os.Open("./poem.txt")
+	if err != nil {
+		fmt.Println("打开文件失败", err)
+	} else {
+		// fmt.Printf("file=%v", file)
+	}
+	defer file.Close()
+
+	// 创建一个＊Reader带缓冲的
+	/* 	const (
+		defaultBufSize = 4096  //默认缓冲区大小为4096
+	) */
+	reader := bufio.NewReader(file)
+	// 循环的读取文件的内容
+	for {
+		str, err2 := reader.ReadString('\n') // 读到一个换行就结束
+		if err2 == io.EOF {  // 读取到文件末尾停止读取
+			break
+		}
+		fmt.Print(str)
+	}
+	fmt.Println("文件读取结束")
+}
+```
+
+## 一次性读取文件
+
+读取我呢见的内容并显示在终端(使用ioutil一次性将整个文件读入到内存中),这种方式适用于文件不大的情况。相关方法和函数(`ioutil.ReadFile`)
+
+```go
+// 使用ioutil.ReadFile一次性读取文件
+// file := "./poem.txt"
+// content, err := ioutil.ReadFile(file)
+// if err != nil {
+// 	fmt.Printf("err: %v\n", err)
+// }
+// fmt.Printf("%v", string(content))
+
+
+// 上述方法在1.6版本之后弃用
+content, err := os.ReadFile("./poem.txt")
+if err != nil {
+    fmt.Printf("err: %v\n", err)
+}
+fmt.Printf("%v", string(content))
+```
+
+## 创建文件并写入内容
+
+![image-20230314103829434](golang.assets/image-20230314103829434.png)  
+
+
+
+**使用`os.OpenFile(),bufio.NewWriter(),*writer`的方法WriteString完成文件的写入**
+
+```go
+	file, err := os.OpenFile("./abc.txt", os.O_WRONLY|os.O_CREATE, 0666)
+	if err != nil {
+		fmt.Printf("open file err=%v", err)
+		return
+	}
+	// 及时关闭file句柄
+	defer file.Close()
+	// 准备写入5句 "hello, Gardon"
+	str := "hello,Gardon"
+	// 写入时，使用带缓存的*Writer
+	writer := bufio.NewWriter(file)
+	for i := 0; i < 5; i++ {
+		writer.WriteString(str)
+	}
+
+	// 因为writer是带缓存的，因此在调用WriterString方法时，其实内容是先写入到缓存的
+	writer.Flush()
+```
+
+**打开一个存在的文件，将原来的内容覆盖成新的内容10句"你好，尚硅谷！"**
+
+```go
+	file, err := os.OpenFile("./abc.txt", os.O_WRONLY|os.O_TRUNC, 0666)
+	if err != nil {
+		fmt.Println("打开文件失败")
+		fmt.Printf("err: %v\n", err)
+	}
+	defer file.Close()
+	writer := bufio.NewWriter(file)
+	str := "hello, 尚硅谷！\n"
+	for i := 0; i < 10; i++ {
+		writer.WriteString(str)
+	}
+	writer.Flush()
+```
+
+**打开一个存在的文件，在原来的内容追加内容"ABC!ENGLISH!"**
+
+```go
+	file2, err2 := os.OpenFile("./abc.txt", os.O_WRONLY|os.O_APPEND, 0666)
+	if err2 != nil {
+		fmt.Println("打开文件失败")
+		fmt.Printf("err2: %v\n", err2)
+	}
+	defer file2.Close()
+
+	writer2 := bufio.NewWriter(file2)
+	str2 := "ABC!ENGLISH!\n"
+	writer2.WriteString(str2)
+	writer2.Flush()
+```
+
+**打开一个存在的文件，将原来的内容读出显示在终端，并追加5句"hello,北京!"**
+
+```go
+	file3, err3 := os.OpenFile("./abc.txt", os.O_RDWR|os.O_APPEND, 0666)
+	if err3 != nil {
+		fmt.Println("打开文件失败")
+		fmt.Printf("err3: %v\n", err3)
+	}
+	defer file3.Close()
+	reader3 := bufio.NewReader(file3)
+	for {
+		str, err4 := reader3.ReadString('\n')
+		if err4 == io.EOF {
+			fmt.Printf("err4: %v\n", err4)
+			break
+		}
+		fmt.Print(str)
+	}
+	writer3 := bufio.NewWriter(file3)
+	for i := 0; i < 5; i++ {
+		writer3.WriteString("hello,北京！\n")
+	}
+	writer3.Flush()
+```
+
+## 判断文件是否存在
+
+![image-20230314221828240](golang.assets/image-20230314221828240.png)
+
+## 拷贝文件
+
+![image-20230314223049669](golang.assets/image-20230314223049669.png)
+
+```go
+// 接收两个文件路径 srcFileName dstFileName
+func CopyFile(dstFileName string, srcFileName string) (written int64, err error) {
+	srcFile, err2 := os.Open(srcFileName)
+	if err2 != nil {
+		fmt.Printf("err2: %v\n", err2)
+	}
+	defer srcFile.Close()
+	reader := bufio.NewReader(srcFile)
+	dstFile, err3 := os.OpenFile(dstFileName, os.O_WRONLY|os.O_CREATE, 0666)
+	defer dstFile.Close()
+	if err3 != nil {
+		fmt.Printf("err3: %v\n", err3)
+		return
+	}
+	writer := bufio.NewWriter(dstFile)
+	return io.Copy(writer, reader)
+}
+```
+
+## ==统计字符个数(有问题)==
+
+```go
+package main
+
+import (
+	"bufio"
+	"fmt"
+	"io"
+	"os"
+)
+
+type CharCount struct {
+	chCount    int // 记录英文的个数
+	numCount   int // 记录数字的个数
+	spaceCount int // 记录空格的个数
+	otherCount int // 其他字符的个数
+}
+
+func totalCharacter(file *os.File) CharCount {
+	reader := bufio.NewReader(file)
+	var count CharCount = CharCount{0, 0, 0, 0}
+	for {
+		str, err := reader.ReadString('\n')
+		fmt.Println(str)
+		if err == io.EOF {
+			break
+		}
+		for _, v := range str {
+			fmt.Println(v)
+			if (65 <= v && v <= 90) || (97 <= v && v <= 122) {
+				count.chCount++
+			} else if 48 <= v && v <= 57 {
+				count.numCount++
+			} else if v == '\t' {
+				count.spaceCount++
+			} else {
+				count.otherCount++
+			}
+		}
+	}
+	fmt.Println(count)
+	return count
+}
+func main() {
+	file, err := os.OpenFile("countChar/a.txt", os.O_RDWR|os.O_CREATE, 0666)
+	// file, err := os.Open("file/countChar/a.txt")
+	if err != nil {
+		fmt.Println("打开文件失败")
+		fmt.Printf("err: %v\n", err)
+	}
+	// fmt.Printf("file: %v\n", file)
+	// count := totalCharacter(file)
+	defer file.Close()
+	// fmt.Print(count)
+	reader := bufio.NewReader(file)
+	var count CharCount = CharCount{0, 0, 0, 0}
+	for {
+		str, err := reader.ReadString('\n')
+		fmt.Println(str)
+		if err == io.EOF {
+			break
+		}
+		for _, v := range str {
+			fmt.Println(v)
+			if (65 <= v && v <= 90) || (97 <= v && v <= 122) {
+				count.chCount++
+			} else if 48 <= v && v <= 57 {
+				count.numCount++
+			} else if v == '\t' {
+				count.spaceCount++
+			} else {
+				count.otherCount++
+			}
+		}
+	}
+	fmt.Println(count)
+
+}
+```
+
+# 22.命令行参数
+
+我们希望能够获取到命令行输入的各种参数，需要使用到命令行参数
+
+1. **`os.Args`是一个string的切片，用来存储所有的命令行参数**
+
+```go
+import (
+	"fmt"
+	"os"
+)
+
+func main() {
+	fmt.Println("命令行的参数有", len(os.Args), "个:")
+	for i, v := range os.Args {
+		fmt.Printf("args[%v]=%v\n", i, v)
+	}
+}
+```
+
+2. **flag包解析，命令行参数**
+
+```go
+import (
+	"flag"
+	"fmt"
+)
+
+func main() {
+	var user string
+	var pwd string
+	var host string
+	var port int
+	flag.StringVar(&user, "u", "", "用户名，默认为空")
+	flag.StringVar(&pwd, "pwd", "", "密码，默认为空")
+	flag.StringVar(&host, "h", "localhost", "主机名，默认为localhost")
+	flag.IntVar(&port, "port", 3306, "端口号，默认为3306")
+	
+    // 有flag.Parse()时，会把用户传递的命令行参数解析为对应变量的值
+	flag.Parse()
+	fmt.Printf("user=%v  pwd=%v host=%v port=%v", user, pwd, host, port)
+}
+```
+
+# 23.json
+
+![image-20230315142415564](golang.assets/image-20230315142415564.png)
+
+## json的数据格式
+
+![image-20230315144208889](golang.assets/image-20230315144208889.png)
+
+## json序列化
+
+json序列化是指，将有key-value结构的数据类型(比如结构体、map、切片)
+
+### 结构体序列化
+
+```go
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Monster struct {
+	Name     string
+	Age      int
+	Birthday string
+	Salary   float64
+	Skill    string
+}
+
+func testStruct() {
+
+	monster := Monster{
+		Name:     "牛魔王",
+		Age:      800,
+		Birthday: "100-1-1",
+		Salary:   80000.0,
+		Skill:    "牛魔拳",
+	}
+
+	// 将monster序列化
+	data, err := json.Marshal(&monster)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Printf("monster序列化后:%v\n", string(data))
+
+}
+```
+
+### 将map序列化
+
+```go
+// 将map序列化
+func testMap() {
+	var a map[string]interface{} = make(map[string]interface{})
+	a["name"] = "红孩儿"
+	a["age"] = 30
+	a["address"] = "火云洞"
+	data, err := json.Marshal(a)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Printf("a序列化后=%v\n", string(data))
+}
+```
+
+### 将slice序列化
+
+```go
+// 对切片进行序列化
+func testSlice() {
+	var slice []map[string]interface{}
+	var m1 map[string]interface{} = make(map[string]interface{})
+	m1["name"] = "jack"
+	m1["age"] = "7"
+	m1["address"] = "北京"
+	slice = append(slice, m1)
+
+	var m2 map[string]interface{} = make(map[string]interface{})
+	m2["name"] = "tom"
+	m2["age"] = "17"
+	m2["address"] = "上海"
+	slice = append(slice, m2)
+
+	data, err := json.Marshal(slice)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Printf("data序列化后: %v\n", string(data))
+}
+```
+
+## 序列化时tag的使用
+
+浏览器反序列化时可以用小写的方式
+
+```go
+type Monster struct {
+	Name     string `json:"name"`  // 反射机制
+	Age      int    `json:"age"`
+	Birthday string
+	Salary   float64
+	Skill    string
+}
+```
+
+## json的反序列化
+
+<span style="color:red">在反序列化一个json字符串时，要确保反序列化后的数据类型后原来序列化的数据类型一致</span>
+
+如果json字符串是同通过程序获取到的，则不需要在对字符串进行转义处理
+
+### 结构体反序列化
+
+```go
+import (
+	"encoding/json"
+	"fmt"
+)
+
+type Monster struct {
+	Name     string `json:"name"`
+	Age      int    `json:"age"`
+	Birthday string
+	Salary   float64
+	Skill    string
+}
+
+// 将json字符串反序列化成struct
+func unmarshalStruce() {
+	str := "{\"name\":\"牛魔王\",\"Age\":500,\"Birthday\":\"2011-11-11\",\"Salary\":8000,\"Skill\":\"牛魔拳\"}"
+	var monster Monster
+	err := json.Unmarshal([]byte(str), &monster)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Println(monster)
+}
+```
+
+### map反序列化
+
+```go
+func unmarshalMap() {
+	str := "{\"adress\":\"火云洞\", \"age\":30, \"name\":\"红孩儿\"}"
+	var a map[string]interface{}
+	err := json.Unmarshal([]byte(str), &a)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Println(a)
+}
+```
+
+### slice反序列化
+
+```go
+func unmarshalSlice() {
+	str := "[{\"address\":\"北京\",\"age\":\"7\",\"name\":\"jack\"},{\"address\":\"上海\",\"age\":\"17\",\"name\":\"tom\"}]"
+	var slice []map[string]interface{}
+	err := json.Unmarshal([]byte(str), &slice)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	}
+	fmt.Println(slice)
+}
+```
+
+# 24.单元测试
+
+go语言中自带一个轻量级的测试框架testing和自带的`go test`命令来实现单元测试和性能测试，testing框架和其他语言中的测试框架类似，可以基于这个框架写针对相应函数的测试用例，也可以基于该框架写相应的压力测试用例。
+
+```go
+func TestGetSub(t *testing.T) {
+	res := getSub(10, 3)
+	if res != 7 {
+		t.Fatalf("测试用例失败,期望值%v, 实际值%v", 7, res)
+	}
+	t.Logf("getSub(10, 3) 执行正确...")
+}
+```
+
+**终端运行`go test -v`**
+
+![image-20230316110604383](golang.assets/image-20230316110604383.png)
+
+## 注意事项
+
+1. 要编写一个新的测试套件，需要创建一个名称以_test.go结尾的文件，该文件包含`TestXxx`函数，如上所述。将该文件放在与被测试问的包相同的包中。该文件将被排除在正常的程序包之外，但运行`go test`命令时将被包含。
+
+   ![image-20230316112813977](golang.assets/image-20230316112813977.png)
+
+2. TestXxx（t *testing.T）的形参类型必须是`*testing.T`
+
+3. 一个测试用例文件中给，可以有多个测试用例函数
+
+4. 运行测试用例指令
+
+   + go test 如果运行正确无日志，错误时，会输出日志
+   + go test -v 运行正确或者错误都会输出日志

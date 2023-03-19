@@ -319,7 +319,6 @@ print(my_foods)
 
 ```python
 friend_foods = my_foods # 行不通，这里两个变量指向的是同一个列表
-
 ```
 
 
@@ -1358,6 +1357,22 @@ print(tuple_time)
 
    ![image-20221206203244048](林粒粒的python基础.assets/image-20221206203244048.png)
 
+### os模块
+
+1. os.mkdirs()根据目录创建文件夹，exit_ok默认为False:如果文件夹存在时会抛出异常
+
+```python
+os.makedirs(os.path.join('..', 'data'), exist_ok=True)
+```
+
+2. os.path.join将路径进行拼接
+
+```python
+os.path.join('..', 'data')
+```
+
+
+
 # 包
 
 ## `__init__.py`
@@ -2311,7 +2326,7 @@ print(len(student))
 
    except 错误类型1 [as 变量 1]：
 
-   ​		处理语句 1
+   ​		处理语句 1 
 
    except 错误类型2 [as 变量 2]：
 
@@ -2328,6 +2343,8 @@ print(len(student))
    finally:
 
    ​		无论是否发生异常的语句
+
+   ![image-20230309171915289](林粒粒的python基础.assets/image-20230309171915289.png)
 
 2. 作用：将程序由异常状态转为正常流程。
 
@@ -2379,6 +2396,8 @@ print(len(student))
 
 # 文件操作
 
+## 读文件
+
 **1. 基础方法：**
 
 + f.read()返回的是一个字符串
@@ -2427,5 +2446,17 @@ with open(".\data.txt", "r", encoding="utf-8") as f:
         tcp_socket = socket.socket(family=socket.AF_INET, type=socket.SOCK_STREAM)
 ```
 
+## 写文件
 
+如果写文件时。文件不存在，程序会自动创建文件
+
++ r+可读可写
+
++ w 写文件，但是会覆盖原文件
+
++ a 在文件末尾追加
+
+  
+
+# 测试
 
