@@ -836,7 +836,14 @@ print(favorite_language)
 print(favorite_language.lstrip())
 # 去掉两边的空白
 print(favorite_language.strip())
+```
 
+## 字符串分割
+
+分割后产生一个列表
+
+```python
+"字,符,串".split(",")
 ```
 
 
@@ -1294,11 +1301,19 @@ if __name__=='__main__':
 
 ### `__all__`
 
-定义可导出成员
++ 写在`__init__.py`中，定义可导出成员，
+
++ 也可在当前文件的开头使用，配合`import *`使用，只导出`__all__`列出的成员
 
 ```python
 __all__ = ["fun01", "MyCalss"]
 ```
+
+![image-20230406223711286](林粒粒的python基础.assets/image-20230406223711286.png)
+
+
+
+![image-20230406223739865](林粒粒的python基础.assets/image-20230406223739865.png)
 
 ### `__doc__`
 
@@ -1315,6 +1330,8 @@ print(__doc__)
 ```python
 print(__file__)
 ```
+
+
 
 ## 内置模块
 
@@ -1382,6 +1399,10 @@ os.path.join('..', 'data')
 会在包加载时被自动调用
 
 可以配合`__all__`设置可导出的模块
+
+
+
+![image-20230406223831536](林粒粒的python基础.assets/image-20230406223831536.png)
 
 
 
@@ -2460,3 +2481,26 @@ with open(".\data.txt", "r", encoding="utf-8") as f:
 
 # 测试
 
+
+
+# 断言
+
+表达式正确，不执行任何操作，否则输出错误信息
+
+```python
+assert expression, "Error message"
+```
+
+# enumerate
+
+enumerate()函数用于将一个可遍历的数据对象(如列表、元组或字符串)组合为一个索引序列，同时列保护数据和数据下标，一般用在for循环中，
+
+```python
+# 构建字典
+a = dict(enumerate([i for i in range(10)]))
+print(a)
+b = list(enumerate(i for i in range(10)))
+print(b)
+```
+
+![image-20230321184853551](林粒粒的python基础.assets/image-20230321184853551.png)

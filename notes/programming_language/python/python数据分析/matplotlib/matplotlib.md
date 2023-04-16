@@ -99,6 +99,31 @@ plt.legend()
 
 ```
 
+## `plt.text()`设置说明文字
+
+```python
+plt.text(x,
+	y,
+	string,
+	fontsize=15,
+	verticalalignment="top",
+	horizontalalignment="right"
+)
+```
+
++ x,y:表示坐标值上的值
+
++ string:表示说明文字
+
++ fontsize:表示字体大小
+
++ verticalalignment：垂直对齐方式 ，参数：[ ‘center’ | ‘top’ | ‘bottom’ | ‘baseline’ ]
+
++ horizontalalignment：水平对齐方式 ，参数：[ ‘center’ | ‘right’ | ‘left’ ]
+
++ xycoords选择指定的坐标轴系统:
+  
+
 ## 保存图片
 
 ```python

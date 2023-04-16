@@ -200,6 +200,9 @@ git pull 远程别名 远程分支
 # git pull相当于下面两条
 git fetch
 git merge
+
+git fetch 远程别名 远程分支：(新建一个分支[起个名字自动新建])
+git merge 新建的名字      [自送合并到当前分支]
 ```
 
 ### 克隆远程代码

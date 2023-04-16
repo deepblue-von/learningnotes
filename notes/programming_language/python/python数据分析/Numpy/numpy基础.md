@@ -312,8 +312,6 @@ numbers.argmax()
 numbers.argmax()  # 4
 ```
 
-
-
 #### 二维数组
 
 ```python
@@ -322,8 +320,6 @@ numbers = np.arange(6).reshape(2,3)
 numbers
 ```
 
-
-
 **axis=0, 在列中比较，选出最大的行索引**
 
 ```python
@@ -331,6 +327,20 @@ numbers.argmax(axis=0)  # [1, 1, 1]
 ```
 
 **axis=1,在行中比较，选出最大的列索引**
+
+### flatnonzero()
+
+该函数输入一个矩阵，返回扁平化后矩阵中非零元素的位置
+
+```python 
+x = [-2, -1, 0, 2, 3]
+np.flatnonzero(x) # [0, 1, 3, 4]
+
+y = [1, 2, 3, 4, 3, 4, 3]
+np.flatnonzero(y == 3) # [2, 4, 6]
+```
+
+
 
 ## 模块
 
@@ -342,5 +352,13 @@ numbers.argmax(axis=0)  # [1, 1, 1]
 np.random.shuffle(numbers)
 ```
 
+2. 从一维数据中随机抽取数字
 
+```python 
+np,random.choice(a, size=None, replace=True, p=None)
+```
+
++ 从a中随机取出size个数据
++ replace=True表示可以取相同的数据
++ 数字p与数组a相对应，表示数组a中每个元素的概率，默认为选取每个元素的概率相同
 

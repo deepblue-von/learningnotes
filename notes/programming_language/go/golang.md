@@ -596,7 +596,10 @@ func main() {
 
 ## 常量
 
-定义一个常量用const关键字
+1. 定义一个常量用const关键字
+
+2. 不需要全部大写
+3. 仍然荣国首字母大小写来控制常量的访问范围
 
 `const constantName type = 3`
 
@@ -636,9 +639,9 @@ const (
 
 ```go
 const (
-	a = iota  0
+	a = iota   // 0
     _
-    b = iota  2
+    b = iota   // 2
 )
 ```
 
@@ -646,9 +649,9 @@ const (
 
 ```go
 const (
-	a = iota  0
+	a = iota   // 0
     b = 100
-    c = iota  2
+    c = iota   // 2
 )
 ```
 
@@ -795,7 +798,7 @@ if 条件表达式 {
 
 ==细节说明:==
 
-go的if还有一个强大的地方就是条件判断语句里面允许 声明一个变量，这个变量的作用域只能在该条件逻辑块内，其他地方就不起作用了
+<span style="color:red">go的if还有一个强大的地方就是条件判断语句里面允许 声明一个变量，这个变量的作用域只能在该条件逻辑块内，其他地方就不起作用了</span>
 
 ```go
 if age := 20; age > 18 {
@@ -1912,7 +1915,7 @@ func main() {
 
 ## 数组
 
-   值类型，存放同一种数据类型
+   数组是值类型。在go语言中数组是固定长度的，存放同一种数据类型。数组中包含的每个数据项被称为数组元素，一个数组包含的元素个数被称为数组的长度。
 
 ```go
 var intArr [3]int
@@ -1926,22 +1929,40 @@ fmt.Printf("intArr的地址为：%p intArr[0]的地址为：%p", &intArr, &intAr
 
    ## 初始化
 
+**1. 声明时初始化**
+
 ```go
 var numArr01 [3]int = [3]int{1, 2, 3}
-fmt.Println(numArr01)
-
-var numArr02 = [3]int{1, 2, 3}
-fmt.Printf("numArr02: %v\n", numArr02)
-
-var numArr03 = [...]int{1, 3, 4, 4}
-fmt.Printf("numArr03: %v\n", numArr03)
-
-// 指定位置初始化
-var numArr04 = [...]int{1: 800, 0: 900}
-fmt.Printf("numArr04: %v\n", numArr04)
 ```
 
-## 遍历
+**2. 可以通过`:=`进行一次性声明和初始化**
+
+```go
+a := [2]int{2, 3}
+```
+
+**3. 省略数组长度的方式初始化(go会在编译时自动计算出 数组的长度）**
+
+```go
+var numArr03 = [...]int{1, 3, 4, 4}
+```
+
+**4. 指定位置方式初始化**
+
+```go
+var numArr04 = [...]int{1: 800, 0: 900}
+```
+
+**5.数组在初始化时，如果没有填满，则空位会通过对应的元素类型零值填充**
+
+```go
+a := [5]int{1, 2, 3}
+fmt.Println(a)   // [1 2 3 0 0]
+```
+
+
+
+## for-range遍历
 
 ```go
 for index, value := range numArr03 {
@@ -1995,89 +2016,245 @@ for index, value := range numArr03 {
    }
    ```
 
+## 二维数组
+
+```go
+func main() {
+	var arr [4][6]int
+	fmt.Printf("arr: %v\n", arr)
+    
+    var arr1 [2][3]int = [2][3]int{{1, 2, 3},{4, 5, 6}}
+    var arr2 [2][3]int = [...][3]int{{1, 2, 3},{4, 5, 6}}
+    var arr3 = [2][3]int{{1, 2, 3}, {4, 5, 6}}
+    var arr4 = [...][3]int{{1, 2, 3},{4, 5, 6}}
+}
+```
+
+**求二维数组长度**
+
+```go
+len(array)  // 求出的是有几行
+len(array[i]) // 求出的是有几列
+```
+
+**乘法表**
+
+```go
+var multi [9][9]string
+for i := 0; i < 9; i++ {
+    for j := 0; j < 9; j++ {
+        if i < j {
+            continue
+        }
+        multi[i][j] = fmt.Sprintf("%d×%d=%d", i+1, j+1, (i+1)*(j+1))
+    }
+}
+for _, v := range multi {
+    for _, v2 := range v {
+        fmt.Printf("%-8s", v2)
+    }
+    fmt.Println()
+}
+```
+
+
+
 ## 切片
 
 <span style="color:red">切片是引用类型</span>
 
-1. cap求切片的容量
+### 创建切片
 
-   > Go 语言的切片拥有长度和容量。切片的长度就是它所包含的元素个数。切片的容量是从它的第一个元素开始数，==到其底层数组==元素末尾的个数。
-   >
-   > 切片 slice 的长度和容量可通过表达式 len(slice) 和 cap(slice) 来获取，我们在使用切片的过程中，如果使用 append 使切片的长度大于了切片的容量，那么切片的容量会以双倍的形式自动扩容。
+**1. 基于数组创建**
 
-   ```go
-   func main() {
-   	var intArr [5]int = [...]int{1, 22, 33, 66, 99}
-   	slice := intArr[0:3]
-   	fmt.Println(cap(slice))
-   	fmt.Println(&slice[0])  // 0xc0000103f0
-   	fmt.Printf("slice的地址:%p\n", &slice)	  // 0xc000008078
-   }
-   ```
+切片可以基于一个已存在的数组创建，从这个层面来说，数组可以看作是切片的底层数组，而切片则可以看作是数组某个连续片段的引用。切片可以只使用数组的一部分元素或者整个数组来创建，甚至可以创建一个比所基于的数组还要大的切片。
 
-2. 切片使用的三种方式
+```go
+// 定义一个数组
+months := [...]string{"January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"}
 
-   + 直接引用一个数组，这个数组是事先存在的，程序员可见
+// 创建切片
+q2 := months[3:6]
+```
 
-   + 通过内置函数make创建
+![image-20230409154014787](golang.assets/image-20230409154014787.png)
 
-     ```go
-     // make 类型，长度，容量
-     var slice01 []float64 = make([]float64, 5, 10)
-     // 对于切片必须要make才能使用
-     fmt.Println(slice01)
-     ```
 
-   + 定义一个切片，直接就指定具体数组
 
-     ```go
-     var slice02 []string = []string{"tom", "jack", "marry"}
-     fmt.Println(slice02)
-     ```
+> **切片 slice 的长度和容量可通过表达式 len(slice) 和 cap(slice) 来获取**
 
-3. 切片的遍历
+```go
+func main() {
+	var intArr [5]int = [...]int{1, 22, 33, 66, 99}
+	slice := intArr[0:3]
+	fmt.Println(cap(slice))
+	fmt.Println(&slice[0])  // 0xc0000103f0
+	fmt.Printf("slice的地址:%p\n", &slice)	  // 0xc000008078
+}
+```
 
-4. 细节说明
 
-   ![image-20221230153215103](golang.assets/image-20221230153215103.png)
 
-   + 用append对切片进行动态追加(go底层会创建一个新的数组)
+**2.基于切片创建**
 
-   ```go
-   var slice03 []int = []int{100, 200, 300}
-   // 通过append直接给slice03追加具体的元素
-   slice03 = append(slice03, 400, 500)
-   fmt.Printf("slice: %v\n", slice03)
-   // 通过append追加一个切片
-   slice03 = append(slice03, slice...)
-   fmt.Printf("slice03: %v\n", slice03)
-   ```
+```go
+firsthalf := months[:6]
+q1 := firsthalf[:3]  // 基于firsthalf的前三个元素创建新切片
+```
 
-   + 切片的拷贝操作
+基于firsthalf创建切片是，选择的范围可以超过firsthalf所包含的元素个数，比如
 
-     如果直接赋值那么，修改第二个切片第一个也会跟着修改；如果用copy那么修改第二个切片，第一个不会改变
-   
-   ```go
-   var a []int = []int{1, 2, 3, 4, 5}
-   var slice04 = make([]int, 10)
-   // 将a复制到slice4
+```go
+q1 := firsthalf[:9]   // [January February March April May June July August September]
+```
+
+
+
+**3.直接创建**
+
+创建类型为`float64`，长度为5，容量为10的切片
+
+```go
+var slice01 []float64 = make([]float64, 5, 10)
+```
+
+直接创建并初始化包含3个元素的数组切片
+
+```go
+var slice02 []string = []string{"tom", "jack", "marry"}
+```
+
+### 动态增加元素
+
+切片比数组更强大之处在于支持动态增加元素，甚至可以在容量不足的情况下自动扩容。在切片类型中，元素个数和实际可分配的存储空间是两个不同的值，元素的个数即切片的实际长度，而可分配的存储空间就是切片的容量。
+
++ 对于基于的胡祖和切片创建的切片而言，默认容量是从切片起始索引到对应底层数组的结尾索引；
++ 对于内置make函数创建的切片而言，在没有指定容量参数的情况下，默认容量和切片长度一致。
+
+**用append对切片进行动态追加(go底层会创建一个新的数组**
+
+`append()`函数的第二个参数是一个不定参数，我们可以按自己需求添加若干元素，设置直接将一个切片追加到另一个切片的末尾
+
+```go
+var slice03 []int = []int{100, 200, 300}
+// 通过append直接给slice03追加具体的元素
+slice03 = append(slice03, 400, 500)
+fmt.Printf("slice: %v\n", slice03)
+// 通过append追加一个切片
+var slice []int = []int{1, 2, 3}
+slice03 = append(slice03, slice...)  // 注意末尾的...不能省略
+fmt.Printf("slice03: %v\n", slice03)
+```
+
+### 自动扩容
+
++ 如果追加的元素个数超过原切片的默认容量，则底层会自动进行扩容；需要注意的时，`append()`函数并不会改变原来的切片，而是会生成一个容量更大的切片，然后把原有的元素和新元素一并拷贝到新切片中（<span style="color:red">重新分配内存</span>）
+
++ 扩容后容量为原容量的两倍；（假设原容量为3，扩容后为6，再次括容12）
++ 当原切片的长度大于或等于1024时，go会以原容量的1.25倍作为新容量的基准（==这个地方并非这么简单，具体怎么样还没弄清楚==）
+
+
+
+### 切片的拷贝操作
+
+如果直接赋值那么，修改第二个切片第一个也会跟着修改；如果用copy那么修改第二个切片，第一个不会改变
+
+<span style="color:red">copy()成功后返回拷贝成功的元素个数</span>
+
+```go
+var a []int = []int{1, 2, 3, 4, 5}
+var slice04 = make([]int, 10)
+// 将a复制到slice4
 copy(slice04, a)
-   fmt.Printf("slice04: %v\n", slice04)
-   ```
-   
-   copy时，如果容量不够，不会报错，容量有多大就copy几个元素
+fmt.Printf("slice04: %v\n", slice04)
+```
 
-5. 删除某个索引处的值
+copy时，如果容量不够，不会报错，容量有多大就copy几个元素
 
-   ```go
-   func main() {
-       var s1 = []int{1, 2, 3, 4}
-       s1 = append(s1[:2], s1[3:]...)
-       fmt.Println(s1)
-   }
-   ```
+如果两个切片不一样大，就会按照其中较小的那个切片的元素个数进行拷贝
 
-   
+```go
+slice1 := []int{1, 2, 3, 4, 5} 
+slice2 := []int{5, 4, 3}
+
+// 复制 slice1 到 slice 2
+copy(slice2, slice1) // 只会复制 slice1 的前3个元素到 slice2 中
+// slice2 结果: [1, 2, 3]
+// 复制 slice2 到 slice 1
+copy(slice1, slice2) // 只会复制 slice2 的 3 个元素到 slice1 的前 3 个位置
+// slice1 结果：[5, 4, 3, 4, 5]
+```
+
+
+
+### 动态删除元素
+
+切片除了支持动态增加元素之外，还可以动态删除元素，在切片中动态删除元素可以通过多种方式实现（其实时通过切片的切片实现的伪删除）
+
+```go
+func main() {
+    var s1 = []int{1, 2, 3, 4}
+    s1 = append(s1[:2], s1[3:]...)
+    fmt.Println(s1)
+}
+```
+
+### 数据共享问题
+
+**切片的数据结构**
+
+```go
+type slice struct {
+    array unsafe.Pointer //指向存放数据的数组指针
+    len   int            //长度有多大
+    cap   int            //容量有多大
+}
+```
+
+**在结构体中使用指针存在不容实例的数据共享问题**
+
+```go
+slice1 := []int{1, 2, 3, 4, 5}
+
+slice2 := slice1[1:3]
+slice2[1] = 6
+
+fmt.Println("slice1:", slice1)
+fmt.Println("slice2:", slice2) //  slice1: [1 2 6 4 5]   slice2: [2 6]
+```
+
+**解决方案**
+
+```go
+slice1 := make([]int, 4)
+slice2 := slice1[1:3]
+slice1 = append(slice1, 0)
+slice1[1] = 2
+slice2[1] = 6
+
+fmt.Println("slice1:", slice1)
+fmt.Println("slice2:", slice2)
+```
+
+### 定义一个二维切片
+
+```go
+func main() {
+	row, col := 0, 0
+	res1 := make([][]int, row)
+	for i := range res1 {
+		res1[i] = make([]int, col)
+	}
+	a := []int{1, 2, 4}
+	res1 = append(res1, a)
+	res1 = append(res1, a)
+	fmt.Println(res1)
+	//[[1 2 4] [1 2 4]]
+}
+
+```
+
+
 
 ## string 和 slice
 
@@ -2174,19 +2351,7 @@ func main() {
 }
 ```
 
-## 二维数组
 
-```go
-func main() {
-	var arr [4][6]int
-	fmt.Printf("arr: %v\n", arr)
-    
-    var arr1 [2][3]int = [2][3]int{{1, 2, 3},{4, 5, 6}}
-    var arr2 [2][3]int = [...][3]int{{1, 2, 3},{4, 5, 6}}
-    var arr3 = [2][3]int{{1, 2, 3}, {4, 5, 6}}
-    var arr4 = [...][3]int{{1, 2, 3},{4, 5, 6}}
-}
-```
 
 # 16. map
 
@@ -3502,6 +3667,31 @@ func main() {
 }
 ```
 
+## 断言实现类型判断
+
+```go
+func TypeJudge(items ...interface{}) { // 接收任意多个任意类型的参数
+    for i, x := range items {
+        switch x.(tuye) { // 这里type是一个关键字，固定写法
+		case bool:
+            fmt.Printf("param #%d is a bool 值是%v\n", i, x)
+        case float64:
+            fmt.Printf("param #%d is a float64 值是%v\n", i, x)
+        case int, int64:
+            fmt.Printf("param #%d is a int 值是%v\n", i, x)
+        case nil:
+            fmt.Printf("param #%d is a nil 值是%v\n", i, x)
+        case string:
+            fmt.Printf("param #%d is a string 值是%v\n", i, x)
+        default:
+            fmt.Printf("param #%d type is unknown 值是%v\n", i, x)
+        }
+    }
+}
+```
+
+
+
 # 18. 项目流程
 
 ## 项目需求分析
@@ -3543,9 +3733,18 @@ func main() {
 
 # 19. golang并发编程
 
+go主线程（有的程序员直接称为线程/也可以理解成进程）：一个go线程上可以起多给我协程，可以将协程理解为是轻量级的线程
+
 ## 协程gotoutine
 
 golang中的并发是函数相互独立运行的能力，Goroutines是并发运行的函数。Golang提供了Goroutines作为并发处理操作的一种方式。
+
+**go协程的特点**
+
++ 有独立的栈空间
++ 共享程序堆空间
++ 调度由用户控制
++ 协程是轻量级的线程
 
 创建一个协程非常简单
 
@@ -3574,13 +3773,152 @@ func main() {
 }
 ```
 
-## 通道channel
 
-![image-20230223220442994](golang.assets/image-20230223220442994.png)
 
-==通道需要在协程中才能写入==
+**主线程和协程执行流程图**
+
+![image-20230403174806598](golang.assets/image-20230403174806598.png)
+
+## goroutine的调度模型
+
+![image-20230403175239023](golang.assets/image-20230403175239023.png)
+
+
+
+![image-20230403175451693](golang.assets/image-20230403175451693.png)
+
+
+
+![image-20230403180559491](golang.assets/image-20230403180559491.png)
+
+
+
+## 资源竞争
+
+
+
+![image-20230403221012206](golang.assets/image-20230403221012206.png)
+
+```go
+package main
+
+import (
+	"fmt"
+	_ "strconv"
+	"time"
+)
+
+var fac map[int]int = make(map[int]int)
+
+func factorial(n int) int {
+	if n == 1 {
+		return 1
+	} else {
+		return n * factorial(n-1)
+	}
+}
+func test(n int) {
+	fac[n] = factorial(n)
+}
+
+func main() {
+	for i := 1; i < 200; i++ {
+		go test(i)
+	}
+	time.Sleep(time.Second * 10)
+	fmt.Println(fac)
+}
+```
+
+
+
+![image-20230403220606942](golang.assets/image-20230403220606942.png)
+
+运行`go build -race main.go`查看竞争信息
+
+**解决方法**
+
+<span style="color:red">对写操作加锁</span>
+
+```go
+package main
+
+import (
+	"fmt"
+	_ "strconv"
+	"sync"
+	"time"
+)
+
+var (
+	fac  map[int]int = make(map[int]int)
+	lock sync.Mutex
+)
+
+func factorial(n int) int {
+	if n == 1 {
+		return 1
+	} else {
+		return n * factorial(n-1)
+	}
+}
+func test(n int) {
+	lock.Lock()
+	fac[n] = factorial(n)
+	lock.Unlock()
+}
+
+func main() {
+	for i := 1; i < 60; i++ {
+		go test(i)
+	}
+	time.Sleep(time.Second * 10)
+	fmt.Println(fac)
+}
+```
+
+
+
+## 通道(管道)channel 
+
+### 为什么需要管道
+
+   前面使用全局变量加锁同步来解决goroutine的通讯，但不完美
+
+1. 主线程在等待所有goroutine全部完成的时间很难确定，上述案例设置十秒，仅仅是估算
+2. 通过全局变量枷锁同步来实现通讯，也并不利于多个协程对全局变量的读写操作
+
+### 基本介绍
+
+1. channel 本质就是一个数据结构-队列
+2. 数据是先进先出（FIFO）
+
+3. 线程安全，多goroutine访问时，不需要加锁，就是说channel本身就是线程安全的
+4. channel是有类型的，一个string的channel只能存放string类型的数据
+
+<img src="golang.assets/image-20230411101926904.png" alt="image-20230411101926904" style="zoom: 67%;" />
+
+### channel的初始化与读写
+
+```go
+func main() {
+	var intChan = make(chan int, 3)
+	intChan <- 10
+	num := 211
+	intChan <- num
+	fmt.Printf("channel len:%v, cap :%v\n", len(intChan), cap(intChan))
+	var num2 int = <-intChan
+	fmt.Printf("num2: %v\n", num2)
+}
+```
+
+**使用注意事项**
+
+![image-20230411105825387](golang.assets/image-20230411105825387.png)
 
 ### 通道的发送和接收特性
+
+==通道需要在协程中才能写入==
 
 1. 对于同一个通道，发送操作之间是互斥的，接收操作之间也是互斥的
 2. 发送操作和接收操作中对元素值的处理是不可分割的
@@ -3608,28 +3946,296 @@ func main() {
 }
 ```
 
-## WaitGroup实现同步  ==没明白==
+### 存放任意数据类型的管道 
 
 ```go
+allChan := make(chan interface{}, 3)
+	allChan <- 10
+	allChan <- "小花"
+	cat := Cat{
+		Name: "小花",
+		Age:  4,
+	}
+	allChan <- cat
+	<-allChan
+	<-allChan
+	newCat := <-allChan
+	fmt.Printf("newCat: %T, newCat: %v\n", newCat, newCat)
+	a := newCat.(Cat)
+	fmt.Println(a.Name)
+}
+```
 
+### channel的关闭
+
+使用内置函数close可以关闭channel，当channel关闭后，就不能再向channel写数据了，但是仍然可以从该channel读取 数据
+
+```go
+func main() {
+	intChan := make(chan int, 3)
+	intChan <- 10
+	intChan <- 20
+	close(intChan)
+	// intChan <- 30
+	a := <-intChan
+	fmt.Printf("a: %v\n", a)
+}
+```
+
+### channel遍历
+
++ 在遍历时，如果channel没有关闭，则会出现deadlock错误
+
++ 在遍历时，如果channel已经关闭，则会正常遍历数据，遍历完后，就会退出遍历
++ 遍历管道不能使用普通的for循环，因为每次从管道中取出，管道长度会减1
+
+```go
+intChan2 := make(chan int, 100)
+for i := 0; i < 100; i++ {
+    intChan2 <- i * 2
+}
+
+close(intChan2)
+for v := range intChan2 {
+    fmt.Println("v=", v)
+}
+```
+
+
+
+```go
+var c = make(chan int)
+
+func main() {
+	go func() {
+		for i := 0; i < 2; i++ {
+			c <- i
+		}
+		close(c)
+	}()
+
+	// r := <-c
+	// fmt.Printf("r: %v\n", r)
+	// r = <-c
+	// fmt.Printf("r: %v\n", r)
+	// r = <-c
+	// fmt.Printf("r: %v\n", r)
+
+	for i := 0; i < 2; i++ {
+		r := <-c
+		fmt.Printf("r: %v\n", r)
+	}
+
+    
+	// for v := range c {
+	// 	fmt.Printf("v: %v\n", v)
+	// }
+ 
+    
+	// for {
+	// 	v, ok := <-c
+	// 	if ok {
+	// 		fmt.Printf("v: %v\n", v)
+	// 	} else {
+	// 		break
+	// 	}
+	// }
+
+}
+```
+
+
+
+### 协程求素数
+
+<img src="golang.assets/image-20230411185409758.png" alt="image-20230411185409758" style="zoom:67%;" />
+
+```go
+import (
+	"fmt"
+	"math"
+	"time"
+)
+
+func isPrime(n int) bool {
+	var flag1 bool
+	for i := 2; i <= int(math.Sqrt(float64(n)))+1; i++ {
+		flag1 = true
+		if n%i == 0 || n == 1 {
+			flag1 = false
+			break
+		}
+	}
+	return flag1
+}
+func main() {
+	intChan := make(chan int, 1000)
+	primeChan := make(chan int, 2000)
+	exitChan := make(chan bool, 4)
+	go func() {
+		for i := 1; i < 80; i++ {
+			intChan <- i
+		}
+		close(intChan)
+	}()
+
+	for j := 0; j < 4; j++ {
+		go func() {
+			for {
+				num, ok := <-intChan
+				if !ok {
+					fmt.Println("协程退出。。。")
+					exitChan <- true
+					break
+				}
+				if isPrime(num) {
+					primeChan <- num
+				}
+			}
+		}()
+	}
+
+	for {
+		if len(exitChan) == 4 {
+			close(primeChan)
+			break
+		}
+	}
+
+	for v := range primeChan {
+		time.Sleep(time.Millisecond * 10)
+		fmt.Printf("v: %v\n", v)
+	}
+}
+```
+
+
+
+### 管道阻塞
+
+如果只向管道写入数据，而没有读取，就会出现阻塞
+
+### 管道使用注意事项
+
+1. channel可以声明为只读或者只写
+
+```go
+// ch chan <- int, 这样ch就只能写操作了
+func send(ch chan<- int, exitChan chan struct{}) {
+    for i:= 0; i < 10; i++ {
+        ch <- i
+    }
+    close(ch)
+    var a struct{}
+    exitChan <- a
+}
+// ch <- chan int, 这样ch就只能读操作了
+func recv(ch <- chan int, exitChan struct{}) {
+    for {
+        v, ok := <- ch 
+        if !ok {
+            break
+        }
+        fmt.Println(v)
+    }
+    var a struct{}
+	exitChan <- a
+}
+func main() {
+    var ch chan int
+    ch = make(chan int, 10)
+    exitChan := make(chan struct{}, 2)
+    go send(ch, exitChan)
+    fo recv(ch, exitChan)
+    var total = 0 
+    for _ = range exitChan {
+        total++
+        if total == 2 {
+            break
+        }
+    }
+    fmt.Println("The end...")
+}
+```
+
+
+
+2. select可以解决从管道取数据的阻塞问题
+
+   
+
+   ![image-20230225111056755](golang.assets/image-20230225111056755.png)
+
+   
+
+   > 通道关闭后，会随机进入一个case，读出来的会是默认值。通道没关闭，会进入default。通道没关闭并且没写default会死锁。
+
+   
+
+```go
+func main() {
+	// 使用selec可以解决从管道读取数据的阻塞问题
+
+	// 1.定义一个管道 10个int数据
+	intChan := make(chan int, 10)
+	for i := 0; i < 10; i++ {
+		intChan <- i
+	}
+	// 2.定义一个管道 5个string数据
+	stringChan := make(chan string, 5)
+	for i := 0; i < 5; i++ {
+		stringChan <- "hello" + fmt.Sprintf("%d", i)
+	}
+	// 问题，在实际开发中，可能我们不好确定什么时候关闭管道
+	// 可以使用select方式解决
+	for {
+		select {
+		// 注意：这里，如果intChan一直没有关闭，不会一直阻塞而deadlock
+		// 会自动到下一个case匹配
+		case v := <-intChan:
+			fmt.Printf("从intChan中读取数据%d\n", v)
+			time.Sleep(time.Millisecond * 500)
+		case v := <-stringChan:
+			fmt.Printf("从stringChan中读取数据%s\n", v)
+			time.Sleep(time.Millisecond * 100)
+		default:
+			fmt.Println("取完了,退出...")
+			return
+		}
+	}
+}
+```
+
+
+
+3. goroutine中使用recover，解决协程中出现panic,导致程序崩溃问题。
+
+   如果我们起了一个协程，但是这个协程出现了panic，如果我们没有捕获这个panic，就会造成整个程序崩溃，这时我们可以在goroutine中使用recover来捕获panic,进行处理，这样即使这个协程发生问题，但是主协程仍然不受影响，可以继续执行。
+
+## WaitGroup实现同步 
+
+```go
 import (
 	"fmt"
 	"sync"
 )
 
+func showMessage(n int) {
+	defer wg.Done()
+	fmt.Printf("n: %v\n", n)
+}
+
 var wg sync.WaitGroup
 
-func Hello(i int) {
-	defer wg.Done()
-	fmt.Println("Hello Goroutine!", i)
-}
 func main() {
+
 	for i := 0; i < 10; i++ {
 		wg.Add(1)
-		go Hello(i)
+		go showMessage(i)
 	}
+
+	fmt.Println("End...")
 	wg.Wait()
-	fmt.Println("end...")
 }
 ```
 
@@ -3685,6 +4291,10 @@ func main() {
 
 ### runtime.GOMAXPROCS
 
+`runtime.NumCPU()`查看cpu的数量
+
+1.8版本之后不用设置使用多少个CPU，默认为多核
+
 ```go
 import (
 	"fmt"
@@ -3713,98 +4323,7 @@ func main() {
 }
 ```
 
-## Mutex互斥锁实现同步
 
-除了channel实现同步之外，还可以使用Mutex互斥锁的方式实现同步
-
-```go
-import (
-	"fmt"
-	"sync"
-	"time"
-)
-
-var m int = 100
-
-var lock sync.Mutex
-
-var wg sync.WaitGroup
-
-func add() {
-	lock.Lock()
-    // wg实现
-	defer wg.Done()
-	m += 1
-	fmt.Printf("m++: %v\n", m)
-	time.Sleep(time.Millisecond * 10)
-	lock.Unlock()
-}
-func sub() {
-	lock.Lock()
-	defer wg.Done()
-	m -= 1
-	fmt.Printf("m--: %v\n", m)
-	time.Sleep((time.Microsecond * 2))
-	lock.Unlock()
-}
-func main() {
-	for i := 0; i < 100; i++ {
-		wg.Add(1)
-		go add()
-		wg.Add(1)
-		go sub()
-	}
-	wg.Wait()
-	fmt.Printf("end m is: %v\n", m)
-}
-```
-
-## channel遍历
-
-```go
-var c = make(chan int)
-
-func main() {
-	go func() {
-		for i := 0; i < 2; i++ {
-			c <- i
-		}
-		close(c)
-	}()
-
-	// r := <-c
-	// fmt.Printf("r: %v\n", r)
-	// r = <-c
-	// fmt.Printf("r: %v\n", r)
-	// r = <-c
-	// fmt.Printf("r: %v\n", r)
-
-	for i := 0; i < 2; i++ {
-		r := <-c
-		fmt.Printf("r: %v\n", r)
-	}
-
-    
-	// for v := range c {
-	// 	fmt.Printf("v: %v\n", v)
-	// }
- 
-    
-	// for {
-	// 	v, ok := <-c
-	// 	if ok {
-	// 		fmt.Printf("v: %v\n", v)
-	// 	} else {
-	// 		break
-	// 	}
-	// }
-
-}
-```
-
-## slect switch
-
-![image-20230225111056755](golang.assets/image-20230225111056755.png)
 
 ## timer
 
@@ -3813,14 +4332,17 @@ timer顾名思义，就是定时器的意思，可以实现一些定时操作，
 ```go
 	timer := time.NewTimer(time.Second * 2)
 	fmt.Printf("time.Now(): %v\n", time.Now())
-	t1 := <-timer.C // 阻塞的，指定时间到了
+	t1 := <-timer.C // 阻塞的，直到时间到了
 	fmt.Printf("t1: %v\n", t1)
 
-	// 如果指向单纯的等待的话，可以使用time.Sleep来实现
+	
 	timer2 := time.NewTimer(time.Second * 2)
+	// 可以只读不接收
 	<-timer2.C
 	fmt.Println("两秒后")
+	// 如果指向单纯的等待的话，可以使用time.Sleep来实现 
 
+	// 可以用time.After()
 	<-time.After(time.Second * 2)
 	fmt.Println("...")
 
@@ -4661,7 +5183,7 @@ func main() {
 
 ## json序列化
 
-json序列化是指，将有key-value结构的数据类型(比如结构体、map、切片)
+<span style= "color:red">json序列化是指，将有key-value结构的数据类型(比如结构体、map、切片)序列化成json字符串的操作</span>
 
 ### 结构体序列化
 
@@ -4823,12 +5345,20 @@ func unmarshalSlice() {
 go语言中自带一个轻量级的测试框架testing和自带的`go test`命令来实现单元测试和性能测试，testing框架和其他语言中的测试框架类似，可以基于这个框架写针对相应函数的测试用例，也可以基于该框架写相应的压力测试用例。
 
 ```go
-func TestGetSub(t *testing.T) {
-	res := getSub(10, 3)
-	if res != 7 {
-		t.Fatalf("测试用例失败,期望值%v, 实际值%v", 7, res)
+package main
+
+import "testing"
+
+// 编写的是用例
+
+func TestAddUpper(t *testing.T) {
+	res := addUpper(10)
+	if res != 55 {
+		// 输出日志的同时停止函数
+		t.Fatalf("addUpper(10)执行错误，期望值%v 实际值%v", 55, res)
 	}
-	t.Logf("getSub(10, 3) 执行正确...")
+	// 如果正确输出日志
+	t.Logf("addUpper(10) 执行正确...")
 }
 ```
 
@@ -4850,3 +5380,199 @@ func TestGetSub(t *testing.T) {
 
    + go test 如果运行正确无日志，错误时，会输出日志
    + go test -v 运行正确或者错误都会输出日志
+
+5. 当出现错误时，可以使用t.Fatalf来格式化输出错误信息，并退出程序
+
+6. t.Logf方法可以输出相应的日志
+
+7. PASS表示测试用例运行成功，FAIL表示测试用例运行失败
+
+8. 测试单个文件，一定要带上被测试的源文件
+
+   `go test -v cal_test.go cal.go`   测试文件名，和测试的原文件
+
+9. 测试单个方法
+
+   `go test -v -run=TestAddUpper`
+
+## 案例
+
+![image-20230403145057476](golang.assets/image-20230403145057476.png)
+
+`monster.go`
+
+```go
+package main
+
+import (
+	"encoding/json"
+	"fmt"
+	"os"
+)
+
+type Monster struct {
+	Name  string
+	Age   int
+	Skill string
+}
+
+func (m *Monster) Store() bool {
+	data, err := json.Marshal(m)
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	} else {
+		file, err2 := os.OpenFile("./data.txt", os.O_CREATE|os.O_WRONLY, 0666)
+		if err2 != nil {
+			fmt.Printf("err2: %v\n", err2)
+		} else {
+			file.WriteString(string(data))
+		}
+	}
+	return true
+}
+func (m *Monster) ReStore() bool {
+	file, err := os.ReadFile("./data.txt")
+	if err != nil {
+		fmt.Printf("err: %v\n", err)
+	} else {
+		err2 := json.Unmarshal(file, m)
+		if err2 != nil {
+			fmt.Printf("err2: %v\n", err2)
+		}
+	}
+	return true
+}
+```
+
+
+
+`store_test.go`
+
+```go
+package main
+
+import "testing"
+
+func TestStore(t *testing.T) {
+	var monster Monster = Monster{
+		Name:  "牛魔王",
+		Age:   800,
+		Skill: "牛魔拳",
+	}
+	res := monster.Store()
+	if !res {
+		t.Fatalf("序列化错误，期望值%v, 实际值:%v", "{\"Name\":\"牛魔王\",\"Age\":800,\"Skill\":\"牛魔拳\"}", res)
+	}
+	t.Logf("序列化成功...")
+}
+```
+
+
+
+`restore_test.go`
+
+```go
+package main
+
+import (
+	"testing"
+)
+
+func TestReStore(t *testing.T) {
+	var monster Monster
+	res := monster.ReStore()
+	if !res {
+		t.Fatalf("反序列化失败，期望值：%v, 实际值: %v", "{牛魔王 800 牛魔拳}", res)
+	}
+	t.Logf("反序列化成功...")
+}
+```
+
+# 25. 反射
+
+## 反射的使用场景
+
+**1.结构体的标签**
+
+![image-20230412152703524](golang.assets/image-20230412152703524.png)
+
+
+
+**2.使用反射机制，编写函数的适配器，桥连接**
+
+![image-20230412152847225](golang.assets/image-20230412152847225.png)
+
+## 反射的基本介绍
+
+1. 反射可以在运行时动态获取变量的各种信息，比如变量的类型(type)，类别(kind)
+
+2. 如果是结构体变量，还可以获取到结构体本身的信息(包括字段，方法)
+
+3. 通过反射，可以修改变量的值，可以调用关联的方法
+
+4. 使用反射，需要import（"reflect"）
+
+5. 示意图
+
+   ![image-20230412154748930](golang.assets/image-20230412154748930.png)
+
+
+
+## 反射的相关函数和转换
+
+![image-20230412164348585](golang.assets/image-20230412164348585.png)
+
+ 
+
+## 入门案例
+
+### 对基本数据类型、interface{}、reflect.Value进行反射的基本操作
+
+```go
+func reflectTest01(b interface{}) {
+	// 通过反射获取传入的变量的type， kind, 值
+	// 1. 先获取到reflect.Type
+	rTyp := reflect.TypeOf(b)
+	fmt.Println("rTyp=", rTyp)
+
+	// 2. 获取到reflect.Value
+	rVal := reflect.ValueOf(b)
+
+	n2 := 2 + rVal.Int()
+	fmt.Println("n2=", n2)
+
+	fmt.Printf("rVal=%v rVal Type=%T", rVal, rVal)
+
+	// 将rVal转成interface{}
+	iv := rVal.Interface()
+
+	// 将interface{}通过断言转成需要的类型
+	num2 := iv.(int)
+	fmt.Printf("num2: %v\n", num2)
+}
+```
+
+
+
+### 对结构体类型、interface{}、reflect.Value进行反射的基本操作
+
+```go
+func reflectTest02(b interface{}) {
+	// 通过反射获取传入的变量的type， kind, 值
+	// 1. 先获取到reflect.Type
+	rTyp := reflect.TypeOf(b)
+	fmt.Println("rTyp=", rTyp)
+
+	// 2. 获取到reflect.Value
+	rVal := reflect.ValueOf(b)
+
+	// 将rVal转成interface{}
+	iv := rVal.Interface()
+
+	fmt.Printf("iv的值: %v, iv的类型: %T\n", iv, iv)
+	// 将interface{}通过断言转换程需要的类型
+	iv1 := iv.(Student)
+	fmt.Println(iv1.Name)
+}
+```
+
