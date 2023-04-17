@@ -10,15 +10,90 @@
 
 ![image-20230307195232438](linux基础.assets/image-20230307195232438.png)
 
-## 安装虚拟机
+## 安装ubantu
 
-VMware 或 virtual box
+### 1.制作系统启动盘
 
-## centos
++ 将u盘格式化为fat32格式
++ 下载镜像 .iso
++ 下载universial-usb-installer
++ 按步骤制作启动盘
 
-<img src="linux基础.assets/image-20230307195702716.png" alt="image-20230307195702716" style="zoom:50%;" />
+### 2.创建空的硬盘分区
 
-![image-20230307195804443](linux基础.assets/image-20230307195804443.png)
++ 拆分出一块分区
+
++ 格式化当前分区ext4
+
+  ![image-20230417190818366](linux基础.assets/image-20230417190818366.png)
+
+### 3.安装
+
++ f12  选择u盘
+
+![image-20230417191009404](linux基础.assets/image-20230417191009404.png)
+
++ install
+
+  <img src="linux基础.assets/image-20230417191242796.png" alt="image-20230417191242796" style="zoom:50%;" />
+
+  <img src="linux基础.assets/image-20230417191324202.png" alt="image-20230417191324202" style="zoom:50%;" />
+
++ 如果看到turn off RST 转到第四步
+
++ 继续
+
+  <img src="linux基础.assets/image-20230417192943061.png" alt="image-20230417192943061" style="zoom:50%;" />
+
++ 安装选项<span style="color:red">慎重</span>
+
+  <img src="linux基础.assets/image-20230417193253800.png" alt="image-20230417193253800" style="zoom:67%;" />
+
++ 找到刚才创建的分区
+
+  ![image-20230417193436446](linux基础.assets/image-20230417193436446.png)
+
+  ![image-20230417193548680](linux基础.assets/image-20230417193548680.png)
+
+  <img src="linux基础.assets/image-20230417193628889.png" alt="image-20230417193628889" style="zoom:67%;" />
+
++ 设置用户名密码
+
+  <img src="linux基础.assets/image-20230417193730734.png" alt="image-20230417193730734" style="zoom:50%;" />
+
++ 自动安装大功告成
+
+
+
+### 4.如果出现turn off RST
+
+<img src="linux基础.assets/image-20230417191444098.png" alt="image-20230417191444098" style="zoom:50%;" />
+
++ 返回windows
+
+  ![image-20230417191644062](linux基础.assets/image-20230417191644062.png)
+
+  <img src="linux基础.assets/image-20230417192306539.png" alt="image-20230417192306539" style="zoom:50%;" />
+
+  <img src="linux基础.assets/image-20230417192333731.png" alt="image-20230417192333731" style="zoom: 50%;" />
+
+  ![image-20230417192401243](linux基础.assets/image-20230417192401243.png)
+
++ f2键进入UEFI的bios设置
+
++ configuration中找到存储设置
+
+  <img src="linux基础.assets/image-20230417192613817.png" alt="image-20230417192613817" style="zoom:50%;" />
+
++ f10保存并退出
+
++ 将这个关闭，重启
+
+  <img src="linux基础.assets/image-20230417192333731.png" alt="image-20230417192333731" style="zoom: 50%;" />
+
+  
+
+
 
 # linux目录结构
 
