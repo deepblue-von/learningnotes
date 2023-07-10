@@ -169,7 +169,7 @@ y_data = torch.from_numpy(xy[:, [-1]])
 
 
 
-### 读取数据集
+### 加载数据集
 
 1. Dataset是一个抽象类
 2. DataLoader是用来加载数据，并进行shuffle，batch_size的操作

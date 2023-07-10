@@ -22,13 +22,9 @@ import pandas as pd
 file_path = "./ratings.csv"
 ratings = pd.read_csv(file_path)
 print(ratings.head())
-
 print(ratings.shape)
-
 print(ratings.columns)
-
 print(ratings.index)
-
 print(ratings.dtypes)
 ```
 

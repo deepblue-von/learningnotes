@@ -774,7 +774,40 @@ print("您输入的数字平均值为" + str(result))
 
 ## 迭代器
 
-==迭代器有两个基本的方法：**iter()** 和 **next()**。==
+### 可迭代对象iterable
+
+1. 定义：具有`__iter__`函数的对象，可以返回迭代器对象
+
+### 迭代过程
+
+```python
+list01 = [12, 31, 43, 23]
+for item in list01:
+    print(item)
+```
+
+### 迭代原理
+
+1. 获取迭代器
+
+   `iterator = list01.__iter__()`
+
+2. 循环获取下一个元素
+
+   ```python
+   while True:
+       try:
+           item = iterator.__next__()
+           print(item)
+       except StopIteration:
+           break
+   ```
+
+   
+
+3. 遇到异常时停止迭代
+
+## 迭代对象iterator
 
 ```python
 # 迭代是逐个访问集合元素的一种操作
@@ -783,11 +816,71 @@ print("您输入的数字平均值为" + str(result))
 迭代器是一个可以记住遍历的位置的对象。
 迭代器对象从集合的第一个元素开始访问，直到所有的元素被访问完结束。迭代器只能往前不会后退。
 """
-list1 = [1, 2, 3]
-a = iter(list1)  # 创建迭代器对象
-print(a)
-print(next(a))  # 输出迭代器的下一个元素
+class Graph:
+    def calculate_area(self):
+        raise NotImplementedError
+
+
+class Circle(Graph):
+    def __init__(self, radius):
+        self.__radius = radius
+
+    def calculate_area(self):
+        return 3.14 * self.__radius ** 2
+
+    def __str__(self):
+        return "一个半径为%d的圆" % (self.__radius)
+
+
+class Rectangle(Graph):
+    def __init__(self, length, width):
+        self.__length = length
+        self.__width = width
+
+    def calculate_area(self):
+        return self.__length * self.__width
+
+    def __str__(self):
+        return "一个长为%d,宽为%d的矩形" % (self.__length, self.__width)
+
+
+class GraphIterator:
+    def __init__(self, target):
+        self.__target = target
+        self.__index = 0
+
+    def __next__(self):
+        if self.__index > len(self.__target) - 1:
+            raise StopIteration
+        temp = self.__target[self.__index]
+        self.__index += 1
+        return temp
+
+
+class GraphManager:
+    def __init__(self):
+        self.__graph_list = []
+
+    def add_graph(self, graph):
+        self.__graph_list.append(graph)
+
+    def __iter__(self):
+        return GraphIterator(self.__graph_list)
+
+
+circle = Circle(4)
+rectangle = Rectangle(8, 6)
+graph_manager = GraphManager()
+graph_manager.add_graph(circle)
+graph_manager.add_graph(rectangle)
+
+for graph in graph_manager:
+    print(graph)
 ```
+
+
+
+<img src="林粒粒的python基础.assets/image-20230505204148999.png" alt="image-20230505204148999" style="zoom:50%;" />
 
 ## 生成器
 
@@ -1236,8 +1329,8 @@ enumerate() 函数用于将一个可遍历的数据对象(如列表、元组或�
 
 ```python
 seq = ['one', 'two', 'three']
-	for i, element in enumerate(seq):
-	   print (i, element)
+for i, element in enumerate(seq):
+	print (i, element)
 
 0 one
 1 two
@@ -2414,6 +2507,8 @@ print(len(student))
 ​           变量名.数据
 
 3. 作用：封装错误信息
+
+
 
 # 文件操作
 

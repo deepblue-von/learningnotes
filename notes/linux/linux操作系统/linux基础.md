@@ -95,6 +95,10 @@
 
 
 
+## wsl设置root密码
+
+![image-20230419144640045](linux基础.assets/image-20230419144640045.png)
+
 # linux目录结构
 
 ![image-20230416174427282](linux基础.assets/image-20230416174427282.png)
@@ -154,11 +158,70 @@
 
   SELinux是一种安全子系统，他能控制程序这能访问特定文件，有三种工作模式，可以自行设置
 
+# WSL
+
+## WSL联网问题
+
+wsl接外网（clash的ip和端口）
+
+```linux
+export http_proxy='http://192.168.31.100:7890'  # 根据实际IP和端口修改地址
+export https_proxy='http://192.168.31.100:7890'
+export all_proxy='socks5://192.168.3.4:7890'
+export ALL_PROXY='socks5://192.168.3.4:7890'
+```
+
+## WSL  db5error
+
+![image-20230629125939444](linux基础.assets/image-20230629125939444.png)
+
 # 远程连接
 
 1. `ifconfig`查看远程ip
 
 ![image-20230416175346379](linux基础.assets/image-20230416175346379.png)
+
+
+
+# vim
+
+<img src="linux基础.assets/image-20230418085703568.png" alt="image-20230418085703568" style="zoom:50%;" />
+
+1. 拷贝当前行 yy, 拷贝当前行向下的5行 5yy， 并粘贴p。【一般模式】
+2. 删除当前行 dd, 删除当前行向下的5行 5dd 【一般模式】
+3. 在文件中查找某个单词【命令行下】/关键字， 回车查找， 输入n就是查找下一个
+4. 设置文件的行号，取消文件的行号【命令行下】`:set nu`和`:set nonu` 【一般模式】
+5. 编辑/etc/profile文件，使用快捷键到该文档的最行末G和最行首gg 
+6. 在一个文件中输入"hello"，然后撤销这个动作u
+7. 编辑/etc/profile文件，并将光标移动到20行， 20gg
+
+```linux
+// 跳转至行首
+0
+
+// 跳转至行尾
+A
+
+// 打开目录下所有文件
+vim * -p 
+切换 ctrl pageup
+```
+
+
+
+# WSL
+
+cmd下查看当前环境安装的wsl
+
+```cmd
+wsl --list
+```
+
+注销当前安装的Linux的Windows子系统
+
+```cmd
+wsl --unregister ubuntu
+```
 
 
 
@@ -179,7 +242,7 @@ halt
 # 现在重启
 reboot
 
-# 把内存的数据同步到磁盘
+# 把内存的数据同步(synchronize)到磁盘
 sync
 ```
 
