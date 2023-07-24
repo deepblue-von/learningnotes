@@ -837,6 +837,10 @@ struct 默认权限是公有权限
 
 
 
+## 成员函数
+
+<span style="color:red">类内定义的成员函数默认为内联函数</span>
+
 ## 构造函数
 
 
@@ -4649,11 +4653,215 @@ void test06()
 
 底层为红黑树，不可以修改键值，可以修改实值
 
+```cpp
+void test01()
+{
+    map<int, int> m;
+    m.insert(pair<int, int>(1, 20));
+    m.insert(make_pair(2, 20));
+    m.insert(map<int, int>::value_type(3, 30));
+    m[4] = 40;
+    for (map<int, int>::iterator it = m.begin(); it != m.end(); it++)
+    {
+        cout << "key = " << it->first << ", value = " << it->second << endl;
+    }
+}
+
+
+void test02()
+{
+    map<int, int> m;
+    m.insert(pair<int, int>(1, 20));
+    m.insert(make_pair(2, 20));
+    m.insert(map<int, int>::value_type(3, 30));
+    m[4] = 40;
+
+    m.erase(3);
+    for (map<int, int>::iterator it = m.begin(); it != m.end(); it++)
+    {
+        cout << "key = " << it->first << ", value = " << it->second << endl;
+    }
+
+    // 查找
+    map<int, int>::iterator pos = m.find(2);
+    if (pos != m.end())
+    {
+        cout << "找到了key为: " << (*pos).first << ", value为: " << pos->second << endl;
+    }
+    else
+    {
+        cout << "未找到" << endl;
+    }
+
+    map<int, int>::iterator ret = m.lower_bound(3);
+    if (ret != m.end())
+    {
+        cout << "找到了lower_bound的key为：" << ret->first << " value: " << ret->second << endl;
+    }
+    else
+    {
+        cout << "未找到" << endl;
+    }
+
+    pair<map<int, int>::iterator, map<int, int>::iterator> it2 = m.equal_range(3);
+    if (it2.first != m.end())
+    {
+        cout << "找到了equal_range中的lower_bound的key为：" << it2.first->first << " value: " << it2.first->second << endl;
+    }
+    else
+    {
+        cout << "未找到equal_range中的lower_bound" << endl;
+    }
+    if (it2.second != m.end())
+    {
+        cout << "找到了equal_range中的upper_bound的key为：" << it2.second->first << " value: " << it2.second->second << endl;
+    }
+    else
+    {
+        cout << "未找到equal_range中的upperwer_bound" << endl;
+    }
+}
+class myCompare
+{
+public:
+    bool operator()(int v1, int v2)
+    {
+        return v1 > v2;
+    }
+};
+
+void test03()
+{
+    map<int, int, myCompare> m;
+    m.insert(pair<int, int>(1, 10));
+    m.insert(make_pair(2, 20));
+    m.insert(map<int, int>::value_type(3, 30));
+    m[4] = 40;
+
+    for (map<int, int, myCompare>::iterator it = m.begin(); it != m.end(); it++)
+    {
+        cout << "key = " << it->first << ", value = " << it->second << endl;
+    }
+}
+```
 
 
 
+## 容器的使用时机
+
+![image-20230724193307941](heima.assets/image-20230724193307941.png)
 
 
+
+# 常用算法
+
+## 函数对象
+
+1. 函数对象一般不定义构造函数和析构函数，所以在构造和析构时不会发生任何问题
+2. 函数对象超出普通函数的概念，函数对象可以有自己的状态
+3. 函数对象可以内联编译，性能好， 用函数指针几乎不可能
+4. 模板函数对象使函数对象具有通用性
+
+
+
+## 谓词
+
+谓词是指普通函数或重载的`operator()`返回值是bool类型的函数对象（仿函数）。如果operator接收一个参数，那么叫做一元谓词，如果接收两个参数，叫做二元谓词，谓词可作为一个判断式。
+
+**一元谓词**
+
+```cpp
+class GraterTan20
+{
+public:
+    bool operator()(int val)
+    {
+        return val > 20;
+    }
+};
+
+int main()
+{
+    vector<int> v;
+    v.push_back(10);
+    v.push_back(20);
+    v.push_back(30);
+    v.push_back(40);
+
+    vector<int>::iterator pos = find_if(v.begin(), v.end(), GraterTan20());
+    if (pos != v.end())
+    {
+        cout << "找到大于20的数字为" << *pos << endl;
+    }
+    else
+    {
+        cout << "未找到" << endl;
+    }
+
+    exit(0);
+}
+```
+
+
+
+**二元谓词**
+
+```cpp
+class MyCompare
+{
+public:
+    bool operator()(int v1, int v2)
+    {
+        return v1 > v2;
+    }
+};
+void test02()
+{
+    vector<int> v;
+    v.push_back(50);
+    v.push_back(20);
+    v.push_back(30);
+    v.push_back(40);
+
+    sort(v.begin(), v.end());
+    printVector(v);
+    sort(v.begin(), v.end(), MyCompare());
+
+    for_each(v.begin(), v.end(), [](int val){ cout << val << '\t'; });
+}
+```
+
+
+
+## 内建函数对象
+
+```cpp
+#include <functional>
+#include <vector>
+#include <algorithm>
+
+
+void test01()
+{
+    negate<int> n;
+    cout << n(10) << endl;
+
+    plus<int> n1;
+    cout << n1(1, 2) << endl;
+}
+
+void test02()
+{
+    vector<int> v;
+    v.push_back(10);
+    v.push_back(30);
+    v.push_back(50);
+    v.push_back(20);
+    v.push_back(60);
+    sort(v.begin(), v.end(), greater<int>());
+    for_each(v.begin(), v.end(), [](int val){ cout << val << '\t' << endl; });
+}
+```
 
 
 
