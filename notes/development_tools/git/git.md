@@ -279,11 +279,17 @@ git config --global http.sslVerify "false"
 | rm      | 删除文件                                                     |
 | mkdir   | 新建目录                                                     |
 | rm -r   | 删除文件夹                                                   |
-| mv      | mv index.html src   <br />index.html 是要移动的文件, src 是目标文件夹<br/>必须保证文件和目标文件夹在同一目录下 |
+| mv      | mv index.html src  <br />index.html 是要移动的文件, src 是目标文件夹<br />必须保证文件和目标文件夹在同一目录下 |
 | clear   | 清屏                                                         |
 | exit    | 退出                                                         |
 |         |                                                              |
 |         |                                                              |
 |         |                                                              |
 
+# 配置git代理
+
+```shell
+$ git config --global http.proxy http://192.168.31.100:7890
+$ git config --global https.proxy https://192.168.31.100:7890
+```
 
