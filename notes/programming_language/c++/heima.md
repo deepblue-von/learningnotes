@@ -1,4 +1,4 @@
-# 命名空间
+# 	命名空间
 
 ```c++
 // 定义一个命名空间
@@ -4863,6 +4863,207 @@ void test02()
 }
 ```
 
+## 适配器
+
+### 函数对象适配器
+
+```cpp
+// 2. 做继承
+class MyPrint :public binary_function<int, int, void>
+{
+public:
+    // 3. 重载(), 加const
+    void operator()(int val, int start) const
+    {
+        cout << val + start << endl;
+    }
+};
+
+
+void test01()
+{
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    int num = 100;
+    // 1.将参数进行绑定
+    for_each(v.begin(), v.end(), bind2nd(MyPrint(), num));
+}
+```
+
+### 取反适配器
+
+```cpp
+class GreaterThanFive: public unary_function<int, bool>
+{
+public:
+    bool operator()(int val) const
+    {
+        return val > 5;
+    }
+};
+
+void test02()
+{
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    // 取反适配器
+    // 一元取反 not1
+    // 继承 unary_function<类型1, 返回值类型>
+    // 加const
+    vector<int>::iterator pos = find_if(v.begin(), v.end(), not1(GreaterThanFive()));
+    // vector<int>::iterator pos = find_if(v.begin(), v.end(), not1(bind2nd(greater<int>(), 5)));
+    if (pos != v.end())
+    {
+        cout << "小于5的数字为：" << *pos << endl;
+    }
+    else
+    {
+        cout << "未找到" << endl;
+    }
+}
+```
+
+
+
+### 函数指针适配器
+
+```cpp
+void myPrint3(int val, int start)
+{
+    cout << val + start << endl;
+}
+
+void test03()
+{
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    cout << "请输入起始累加值:" << endl;
+    int num = 3;
+    cin >> num;
+    // 函数指针适配器，将函数指针 适配成函数对象
+    for_each(v.begin(), v.end(), bind2nd(ptr_fun(myPrint3), num));
+}
+```
+
+
+
+### 成员函数适配器
+
+```cpp
+class Person
+{
+public:
+    Person(string name, int age) : name(std::move(name)), age(age) {}
+
+    void showPerson()
+    {
+        cout << "成员函数: " << endl;
+        cout << "姓名: " << this->name << ", 年龄: " << this->age << endl;
+    }
+    string name;
+    int age;
+};
+
+void printPerson(Person &p)
+{
+    cout << "姓名: " << p.name << ", 年龄: " << p->age << endl;
+}
+void test04()
+{
+    vector<Person> v;
+    Person p1("xiaozhu", 18);
+    Person p2("xiaochan", 16);
+    Person p3("axiang", 18);
+    Person p4("xiaoqiao", 17);
+    Person p5("daqiao", 18);
+    v.push_back(p1);
+    v.push_back(p2);
+    v.push_back(p3);
+    v.push_back(p4);
+    v.push_back(p5);
+//    for_each(v.begin(), v.end(), printPerson);
+    for_each(v.begin(), v.end(), mem_fun_ref(&Person::showPerson));
+}
+```
+
+## 常用遍历算法
+
+```cpp
+class MyPrint
+{
+public:
+    bool operator()(int val)
+    {
+        cout << val << endl;
+        count++;
+    }
+    int count = 0;
+};
+
+void test01()
+{
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    MyPrint mp = for_each(v.begin(), v.end(), MyPrint());
+    cout << "count = " << mp.count << endl;
+}
+
+class MyPrint2 : public binary_function<int, int, void>
+{
+public:
+    void operator()(int val, int start) const
+    {
+        cout << val + start << endl;
+    }
+};
+void test02()
+{
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    for_each(v.begin(), v.end(), bind2nd(MyPrint2(), 5));
+}
+```
+
+## 搬运transform
+
+```cpp
+class MyTransform
+{
+public:
+    int operator()(int val)
+    {
+        return val;
+    }
+};
+void test03()
+{
+    vector<int> v;
+    for (int i = 0; i < 10; i++)
+    {
+        v.push_back(i);
+    }
+    vector<int> target;
+    // 重新指定target的容量
+    target.resize(10);
+    transform(v.begin(), v.end(), target.begin(), MyTransform());
+    for_each(target.begin(), target.end(), [](int val){ cout << val << endl; });
+}
+```
 
 
 
@@ -4886,9 +5087,4 @@ void test02()
 
 
 
-
-
-
-
-
-# end
+# 
