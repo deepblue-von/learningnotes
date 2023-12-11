@@ -3302,7 +3302,7 @@ bool Student<T1, T2>::operator<(const Student<T1, T2> &stu) const
 ```cpp
 template<class NAMETYPE, class AGETYPE>
 class Person
-{
+{	
 public:
     Person(NAMETYPE name, AGETYPE age) : name(name), age(age) {}
     NAMETYPE name;
@@ -5067,6 +5067,48 @@ void test03()
 
 
 
+# c++新特性
+
+## 初始化列表
+
+`return {}`   表示”返回一个用空   <span style="color:green">列表初始化器</span>   初始化的函数返回类型的对象“。确切的行为取决于返回对象的类型。
+
+如果返回对象为一个vector,则{}将初始化一个vector
+
+
+
+
+
+
+
+# 左值与右值
+
+> 在c++中，当你尝试将一个右值（Rvalue）绑定到非常量左值引用（Non-const Lvalue reference）时，编译器会报错。右值是指那些临时的、不可修改的值，例如表达式或者临时对象
+
+例如，这段代码会导致类似的错误：
+
+```c++
+void function(int& x) {
+    // some operation
+}
+
+int main() {
+    function(5); // 这里 5 是右值，无法直接绑定到非常量左值引用
+    return 0;
+}
+```
+
+这个错误意味着你尝试将一个右值（5）绑定到一个非常量左值应用（int &）上，而在c++中，非常量引用无法直接绑定到右值
+
+
+
+# 关于读写，输入输出
+
+![image-20231206134858512](heima.assets/image-20231206134858512.png)
+
+
+
+![image-20231206162858137](heima.assets/image-20231206162858137.png)
 
 
 
@@ -5080,11 +5122,4 @@ void test03()
 
 
 
-
-
-
-
-
-
-
-# 
+#  

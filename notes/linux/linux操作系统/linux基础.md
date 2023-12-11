@@ -103,6 +103,10 @@
 
 ![image-20230416174427282](linux基础.assets/image-20230416174427282.png)
 
+
+
+![image-20231127222949281](linux基础.assets/image-20231127222949281.png)
+
 + /bin **常用**（/usr/bin、/usr/local/bin）
 
   是binary的缩写，这个目录存放着最经常使用的命令
@@ -158,6 +162,18 @@
 
   SELinux是一种安全子系统，他能控制程序这能访问特定文件，有三种工作模式，可以自行设置
 
+
+
+# linux shell 快捷键
+
+![image-20231127215832518](linux基础.assets/image-20231127215832518.png)
+
+
+
+CTRL u  删除行　
+
+
+
 # WSL
 
 ## WSL联网问题
@@ -183,7 +199,25 @@ export ALL_PROXY='socks5://192.168.3.4:7890'
 
 
 
+
+
 # vim
+
+
+
+## vim设置
+
+```shell
+inoremap jj <esc>inoremap ' ''<ESC>i
+inoremap " ""<ESC>i
+inoremap ( ()<ESC>i
+inoremap [ []<ESC>i
+inoremap { {<CR>}<ESC>O
+"编辑模式下jj快速跳出编辑模式
+inoremap jj <ESC>
+```
+
+
 
 <img src="linux基础.assets/image-20230418085703568.png" alt="image-20230418085703568" style="zoom:50%;" />
 
@@ -192,20 +226,38 @@ export ALL_PROXY='socks5://192.168.3.4:7890'
 3. 在文件中查找某个单词【命令行下】/关键字， 回车查找， 输入n就是查找下一个
 4. 设置文件的行号，取消文件的行号【命令行下】`:set nu`和`:set nonu` 【一般模式】
 5. 编辑/etc/profile文件，使用快捷键到该文档的最行末G和最行首gg 
-6. 在一个文件中输入"hello"，然后撤销这个动作u
+6. 在一个文件中输入"hello"，==然后撤销这个动作u==
 7. 编辑/etc/profile文件，并将光标移动到20行， 20gg
+8. hjkl 左下右上
 
-```linux
-// 跳转至行首
+```shell
+// 跳转至行首[一般模式]
 0
 
-// 跳转至行尾
+// 跳转至行尾[一般模式]
 A
 
 // 打开目录下所有文件
 vim * -p 
 切换 ctrl pageup
+
+vim -p a.c b.c
+gt // 切换至下一个文件
+gT // 切换至上一个文件
+
+//  分屏创创建文件
+:vsp  sub.c  
+ctrl ww  切换窗口
+
 ```
+
+![image-20231128173628269](linux基础.assets/image-20231128173628269.png)
+
+
+
+![image-20231128175320892](linux基础.assets/image-20231128175320892.png)
+
+![image-20231128180225140](linux基础.assets/image-20231128180225140.png)
 
 
 
@@ -227,7 +279,7 @@ wsl --unregister ubuntu
 
 # 关机&重启命令
 
-```linux
+```shell
 # 立刻进行关机
 shutdown -h now
 
@@ -279,3 +331,277 @@ ubantu下的基本语法`adduser 用户名`
 
 `passwd 用户名`
 
+## 切换用户
+
+`su zhangsan`
+
+`su`   切换到root用户
+
+
+
+# 目录和文件操作
+
+```shell
+cd - 返回上一个目录
+cd ~ 进入用户主目录  /home/linux
+cd / 进入根目录
+
+ls -l  列出当前目录下的所有文件，并显示详细信息
+ls -a  列出隐藏文件
+ls -d  显示目录(命令后面跟着的目录)
+
+touch file.c  创建文件
+
+mkdir dir  创建目录
+ls -l dir  查看dir目录下的详细信息
+ls -dl dir 查看dir目录本身的信息
+
+ls -R  有目录递归进入查看
+
+rmdir dir  删除空目录
+rm -r dir 递归删除目录 
+```
+
+## linux系统文件类型
+
+![image-20231127223127978](linux基础.assets/image-20231127223127978.png)
+
+# 常用命令
+
+## which命令
+
+which date  查看命令的位置
+
+## mv
+
+```shell
+mv file1 file2   重命名
+mv file1 dir1 移动
+```
+
+## cp
+
+```shell
+cp file1 file2 用file1创建file2
+cp file1 dir1  将file1复制到dir1
+cp -a dir dir2
+```
+
+## cat
+
+```shell
+cat file 查看文件并输出到终端
+```
+
+## more / less
+
+显示文件内容，空格翻页，回车下一行
+
+## head / tail
+
+```shell
+head -15 file 查看前15行
+```
+
+## 软连接、硬连接
+
+```shell
+ln -s file file.s  给file创建一个file.s的软连接//相当于快捷方式
+ln file file.h  创建硬连结
+```
+
++ 为保证软连接在任何地方可用，创建时必须使用绝对路径
+
+## 查看文件状态信息
+
+```shell
+stat file
+```
+
+
+
+## 修改权限
+
+```shell
+chmod u+x file.c
+chmod 471 file.c
+```
+
+![image-20231128113206263](linux基础.assets/image-20231128113206263.png)
+
+## 修改所有者
+
+```shell
+chown user1 a.c  
+chown user1:group1 a,c  修改所有者和用户组
+```
+
+## 查找文件find
+
++ linux不以后缀区分文件类型
+
+```shell
+find ./ -type 'l'   按文件类型查找
+find ./ -name '*.jpg'  按文件名查找
+find ./ -maxdepth 1 -name  '*.jpg'   指定寻找层级,maxdepth要作为第一个参数出现
+```
+
+![image-20231128133331058](linux基础.assets/image-20231128133331058.png)
+
++ 寻找并执行命令 -exec
+
+![image-20231128133851539](linux基础.assets/image-20231128133851539.png)
+
++ -ok  以交互式的方式寻找并执行
+
+
+
++ find 和管道结合  xargs
+
+  将find搜索结果集执行某一指定命令，当结果集数量过大时，可以分片映射
+
+```shell
+find ./ -maxdepth 1 -type f | xargs ls -l    // -f表示普通文件
+```
+
+将拆分依据改为null
+
+![image-20231128140430728](linux基础.assets/image-20231128140430728.png)
+
+## 查找文件内容grep
+
+```shell
+grep -r 'copy' ./ -n
+```
+
+## ps	
+
+显示进程状态
+
+```shell
+ps aux | grep usr   搜索进程内容包含usr的进程/x代表不仅显示附加到终端的进程，也显示后台进程
+```
+
+# 软件安装和卸载
+
+ ```shell
+apt-get install
+yum install
+
+yum update   //跟新本地软件列表
+yum remove 软件名  //卸载软件
+ ```
+
+# 压缩和解压
+
+## tar
+
+```shell
+tar zcvf 要生成的压缩包名 压缩材料
+	tar zcvf test.tar.gz file1 dir2    // 使用gzip方式压缩
+tar jcvf test.tar.gz file1 dir2    // 使用bzip2方式压缩
+```
+
+**file**: `file  hello.c`查看hello.c的文件类型
+
+```shell
+tar zxvf test.tar.gz    // 解压缩
+```
+
+## rar
+
+![image-20231128154905355](linux基础.assets/image-20231128154905355.png)
+
+## zip
+
+![image-20231128154932189](linux基础.assets/image-20231128154932189.png)
+
+# 其它命令
+
+
+
+
+
+# 静态库
+
+## 制作
+
+```shell
+1. 将.c生成a.o文件
+gcc -c add.c -o add.o
+gcc -c sub.c -o sub.o
+
+2. 使用ar工具之所静态库
+ar rcs mylib.a  add.o sub.o
+
+3. 写配套头文件,add, sub的声明
+```
+
+## 使用
+
+```shell
+1. 包含头文件
+
+2. 将静态库一起编译
+gcc test.c mylib.a -o test
+```
+
+![image-20231130122137221](linux基础.assets/image-20231130122137221.png)
+
+```shell
+gcc test.c ./lib/libmyth.a -o test -I ./inc
+```
+
+
+
+
+
+# 动态库
+
+## 制作
+
+```shell
+1. 将.c 生成.O文件 （生成与位置无关的代码 -fPIC）
+gcc -c add.c -o add.o -fPIC
+
+2. 使用gcc -shared制作动态库
+gcc -shared lib库名.so  add.o sub.o
+```
+
+## 使用
+
+![image-20231130122044001](linux基础.assets/image-20231130122044001.png)
+
+1. 编译可执行程序时指定所使用的动态库,  -l 指定库名， -L指定库路径
+
+2. 运行时报错，通过环境变量
+
+   ![image-20231130122305668](linux基础.assets/image-20231130122305668.png)	
+
+   
+
+![image-20231130133351923](linux基础.assets/image-20231130133351923.png)
+
+
+
+# gdb调试工具
+
+## 基础使用
+
+```shell
+gcc test.c -o test -g  // -g生成调试文件
+gdb test
+list: list 1  列出源码， 从第一行开始
+b:  b 20   // 在20行设置断点
+run/r   运行程序
+n/next 下一条指令（会越过函数）
+s/step 下一条指令(会进入函数)
+p/print  p i  查看变量i的值
+continue  继续执行断点后续指令
+quit   推出当前调试
+display i 跟踪变量
+```
+
+## 其他
+
+ 

@@ -54,3 +54,7 @@
 ![image-20220405154556808](typora.assets/image-20220405154556808.png)
 
 
+
+GET /index.html HTTP/1.1
+
+HOST.ww.baidu.com
