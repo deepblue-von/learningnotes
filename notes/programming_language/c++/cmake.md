@@ -1,4 +1,4 @@
-# cmake基础使用
+# make基础使用
 
 ![image-20231025152030460](cmake.assets/image-20231025152030460.png)
 

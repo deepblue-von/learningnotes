@@ -262,7 +262,7 @@ void test01()
 
 1. 引用没有定义，是一种关系型声明，声明它和原有某一变量的关系。故而类型与原类型保持一致，且不分配内存，与被引用的变量有相同的地址
 
-2. <span style="color:red">声明的时候必须初始化，一经声明，不可变更</span>>
+2. <span style="color:red">声明的时候必须初始化，一经声明，不可变更</span>
 
    `int &b;`  错误
 
@@ -302,7 +302,7 @@ int main()
 + 不要返回局部变量的引用
 + 函数的调用可以作为左值
 
-```cpp
+```　cpp
 // 不要返回局部变量的引用
 int &test01()
 {
@@ -339,7 +339,6 @@ int main() {
 
 ```cpp
 int &ref = a;  // 自动转换为int *const ref = &a;
-
 ref = 20; // 内部发现ref是引用，自动转换为*ref = 20;
 ```
 
@@ -1974,7 +1973,7 @@ void test01()
 + 仿函数没有固定的写法，非常灵活
 
 ```cpp
-#include <iostream>
+·#include <iostream>
 using namespace std;
 
 class MyPrint{
@@ -2015,7 +2014,7 @@ int main()
 
 
 
-### 智能指针(不是很理解，可再看)
+### 能指针
 
 ```cpp
 class MyAutoPtr
@@ -2842,8 +2841,8 @@ void test01()
 
 1. 重载：一定是同一个作用域下
 2. 重定义：是发生在两个不同的类中，一个是父类，一个是子类
-   				1. 普通函数重定义    如果父类的普通成员函数，被子类重写，说是重定义
-      				2. 虚函数重写    如果父类中的虚函数，被子类重写，就是虚函数重写，这个函数会发生多态
+   			 	1. 普通函数重定义    如果父类的普通成员函数，被子类重写，说是重定义
+         	2. 虚函数重写    如果父类中的虚函数，被子类重写，就是虚函数重写，这个函数会发生多态
 
 # 标准输入流
 
@@ -2924,7 +2923,7 @@ void test01()
 }
 ```
 
-### 写文件
+### 读文件
 
 读文件步骤：
 
@@ -3507,9 +3506,9 @@ void test02()
 ## 动态类型转换（dynamic_cast）
 
 + 不支持内置类型的转换
-
 + 主要用于类层次间的上行转换和下行转换
 + 在类层次间进行上行转换时，`dynamic_cast`和`static_cast`的效果是一样的
++ 
 + 在进行下行转换时，`dynamic_cast`具有类型检查功能，比`static_cast`更安全
 + <span style="color:red">只要发生多态，那么父子之间的转换总是安全的</span>
 
@@ -3547,9 +3546,9 @@ void test04()
 
 ## `const char *`和`string`
 
-`char *   to   string`      string(char*)  string的有参构造
+`char *`   to   `string`      string(char*)  string的有参构造
 
-`string    to  const  char * `      .c_str()
+`string `   to  `const  char * `      .c_str()
 
 
 
