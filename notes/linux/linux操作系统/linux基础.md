@@ -181,7 +181,7 @@ CTRL u  删除行　
 wsl接外网（clash的ip和端口）
 
 ```linux
-export http_proxy='http://192.168.31.100:7890'  # 根据实际IP和端口修改地址
+export http_proxy='http://172.30.224.1:7890'  # 根据实际IP和端口修改地址
 export https_proxy='http://192.168.31.100:7890'
 export all_proxy='socks5://192.168.3.4:7890'
 export ALL_PROXY='socks5://192.168.3.4:7890'
