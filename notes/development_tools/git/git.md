@@ -164,6 +164,7 @@ git remote -v
 
 # 删除关联的远程仓库（只是删除关联，并没有删库）
 git remote remove orign
+
 ```
 
 
@@ -189,7 +190,7 @@ git push -u origin master
 git push 远程别名 本地分支:远程分支
 ```
 
-
+如果
 
 ### 拉取远程仓库的代码到本地仓库
 
@@ -221,7 +222,28 @@ git clone ssh
 
 
 
+## 如果提示没有权限
 
+需要ssh密钥
+
+```shell
+# 在本地生成密钥
+cd ~
+cd .ssh
+ssh-keygen -t rsa -b 4096
+
+# 如果不是第一次生成，则起一个文件名
+
+# 复制公钥
+ll
+vim id_rsa.pub
+```
+
+<img src="C:\Users\haojiangwei\AppData\Roaming\Typora\typora-user-images\image-20240307144619156.png" alt="image-20240307144619156"  />
+
+
+
+将密钥复制到github
 
 ## 团队内协作
 
