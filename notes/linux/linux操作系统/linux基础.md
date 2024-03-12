@@ -524,20 +524,26 @@ tar zxvf test.tar.gz    // 解压缩
 
 # 静态库
 
+gcc 进行链接时，会把静态库中代码打包到可执行程序中
+
+## 命名规则
+
+![image-20240310214541718](./linux基础.assets/image-20240310214541718.png)
+
 ## 制作
 
 ```shell
-1. 将.c生成a.o文件
+1. 将.c生成a.o文件（.c文件中一定要包含头文件add.h）
 gcc -c add.c -o add.o
 gcc -c sub.c -o sub.o
 
 2. 使用ar工具之所静态库
 ar rcs mylib.a  add.o sub.o
 
-3. 写配套头文件,add, sub的声明
+3. 写静态库的配套头文件,add, sub的声明
 ```
 
-## 使用
+## 使用	
 
 ```shell
 1. 包含头文件
@@ -550,6 +556,9 @@ gcc test.c mylib.a -o test
 
 ```shell
 gcc test.c ./lib/libmyth.a -o test -I ./inc
+
+# mymath是库的名字，lib是库的前缀
+gcc main.c -o app -L./lib -l mymath
 ```
 
 
@@ -558,14 +567,22 @@ gcc test.c ./lib/libmyth.a -o test -I ./inc
 
 # 动态库
 
+gcc 进行链接时，动态库的代码不会被打包到可执行程序中，程序启动之后，动态库会被加载到内存中
+
+## 命名规则
+
+![image-20240310214612975](./linux基础.assets/image-20240310214612975.png)
+
 ## 制作
 
 ```shell
 1. 将.c 生成.O文件 （生成与位置无关的代码 -fPIC）
 gcc -c add.c -o add.o -fPIC
+或者
+gcc -c add.c -o add.o -fpic
 
 2. 使用gcc -shared制作动态库
-gcc -shared lib库名.so  add.o sub.o
+gcc -shared -o lib库名.so  add.o sub.o
 ```
 
 ## 使用
@@ -574,13 +591,83 @@ gcc -shared lib库名.so  add.o sub.o
 
 1. 编译可执行程序时指定所使用的动态库,  -l 指定库名， -L指定库路径
 
-2. 运行时报错，通过环境变量
-
-   ![image-20231130122305668](linux基础.assets/image-20231130122305668.png)	
-
+   ```shell
+   gcc test.c -o test -I ./inc/ -L ./lib/ -l mymath
    
+   # 列出程序运行时所需要的库
+   ldd test
+   ```
 
-![image-20231130133351923](linux基础.assets/image-20231130133351923.png)
+2. 如何定位共享库文件
+
+![image-20240310224152563](./linux基础.assets/image-20240310224152563.png)
+
+3. 运行时报错，通过添加环境变量
+
+   **临时配置**
+
+   ```shell
+   # $LD_LIBRARY: 表示拼接上原先的环境变量
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:动态库的绝对路径
+   ```
+
+   关闭终端之后，配置失效
+
+   **永久配置用户级**
+
+   ```shell
+   # 切入home文件下找到.bashrc文件修改
+   cd home
+   ll
+   vim .bashrc
+   
+   # 在.bashrc文件最后一行插入以下指令
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:动态库的绝对路径
+   
+   # 生效更新
+   . .bashrc # source .bashrc
+   
+   # 在处理后生成的app文件下用lld指令，如果libcalculate.so以分配内存且路径在lib文件夹下则链接成功
+   ldd app
+   
+   ```
+
+   **永久配置系统级**
+
+   ```shell
+   # 方法一
+   
+   # 用管理员身份进入系统变量设置文件
+   sudo vim /etc/profile
+   
+   # 在profile文件最后一行插入以下指令
+   export LD_LIBRARY_PATH=$LD_LIBRARY_PATH:lib文件的绝对路径
+   
+   # 生效更新
+   . /etc/profile # source /etc/profile
+   
+   # 在处理后生成的app文件下用lld指令，如果libcalculate.so以分配内存且路径在lib文件夹下则链接成功
+   ldd app
+   
+   
+   
+   # 方法二
+   
+   # 由于/etc/ld.so.cache文件是二进制文件，所以我们间接修改/etc/ld.so.conf文件：插入lib文件的绝对路径保存即可
+   sudo vim /etc/ld.so.conf
+   
+   # 生效更新
+   sudo ldconfig
+   
+   # 在处理后生成的app文件下用lld指令，如果libcalculate.so以分配内存且路径在lib文件夹下则链接成功
+   ldd app
+   
+   
+   # 方法三
+   将自定义动态库拷贝到/lib 或/usr/lib目录下（不建议这样做）
+   ```
+
+
 
 
 
