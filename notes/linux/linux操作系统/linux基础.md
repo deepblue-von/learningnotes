@@ -479,8 +479,18 @@ grep -r 'copy' ./ -n
 显示进程状态
 
 ```shell
-ps aux | grep usr   搜索进程内容包含usr的进程/x代表不仅显示附加到终端的进程，也显示后台进程
+ps aux | grep usr   搜索进程内容包含usr的进程 x代表不仅显示附加到终端的进程，也显示后台进程
 ```
+
+## stat
+
+显示文件的信息
+
+```shell
+stat hello.txt
+```
+
+
 
 # 软件安装和卸载
 
@@ -561,7 +571,14 @@ gcc test.c ./lib/libmyth.a -o test -I ./inc
 gcc main.c -o app -L./lib -l mymath
 ```
 
+## 静态库的优缺点
 
++ 优点
+  + 静态库被打包到应用程序中加载速度快
+  + 发布程序无需额外提供静态库，移植方便
++ 缺点
+  + 消耗系统资源，浪费内存
+  + 更新，部署，发布麻烦
 
 
 
@@ -667,7 +684,98 @@ gcc -shared -o lib库名.so  add.o sub.o
    将自定义动态库拷贝到/lib 或/usr/lib目录下（不建议这样做）
    ```
 
+## 动态库的优缺点
 
++ 优点
+  + 可以实现进程间资源共享
+  + 更新，部署，发布简单
+  + 加载动态库时间可控
+
++ 缺点
+  + 加载速度相对于静态库慢
+  + 发布程序时需要提供依赖的动态库
+
+
+
+# makefile
+
+## 什么是makefile
+
+makefile是一种用于管理和自动化软件爱你项目编译，构建爱你和部署过程的文本文件
+
+## 命名规则
+
+makefile/Makefile
+
+## makefile变量
+
+| 预定义变量名 | 含义                 | 默认值 |
+| ------------ | -------------------- | ------ |
+| AR           | 归档维护程序的名称   | ar     |
+| CC           | C编译器的名称        | cc     |
+| CXX          | C++编译器的名称      | g++    |
+| $@           | 目标文件的完整名称   |        |
+| $<           | 第一个以来文件的名称 |        |
+| $^           | 所有的依赖文件       |        |
+
+**自定义变量**
+
+变量名=变量值
+
+**获取变量值**
+
+$(var)
+
+
+
+## 模式匹配
+
+| 通配符 | 含义                                        |
+| ------ | ------------------------------------------- |
+| *      | 匹配零个或多个字符                          |
+| ？     | 匹配一个字符                                |
+| %      | 匹配一个字符串（两个%匹配的是同一个字符串） |
+| [...]  | 匹配方括号内的任何一个字符                  |
+| [^...] | 匹配除方括号内字符之外的任何一个字符        |
+|        |                                             |
+
+
+
+## makefile常用函数
+
+1. $(wildcard PATTERN)
+
+   作用： 获取制定目录下指定的文件列表
+
+   参数： PATTERN指一个或多个（空格隔开）对应某种类型的文件
+
+   返回： 得到对应匹配的文件列表
+
+2. $(patsubst PATTERN, REPLACEMENT, TEXT)
+
+   作用： 如果TEXT与PATTERN匹配，则用REPLACEMENT对应替换TEXT
+
+   参数： PATTERN是之匹配规则，REPLACEMENT是指替换后字符串，TEXT是待替换字符串
+
+   返回： 被替换后的字符串
+
+
+
+```Makefile
+src=$(wildcard ./*.c)
+objs=$(patsubst %.c, %.o, $(src))
+target=app
+$(target):$(objs)
+	$(CC) $(objs) -o $@
+
+%.o:%.c
+	$(CC) -c $< -o $@
+
+# .PHONY  clean是一个伪目标，不生成对应的clean文件
+.PHONY:clean
+clean:
+	rm -f $(objs)
+```
 
 
 
@@ -678,17 +786,249 @@ gcc -shared -o lib库名.so  add.o sub.o
 ```shell
 gcc test.c -o test -g  // -g生成调试文件
 gdb test
-list: list 1  列出源码， 从第一行开始
-b:  b 20   // 在20行设置断点
-run/r   运行程序
-n/next 下一条指令（会越过函数）
-s/step 下一条指令(会进入函数)
-p/print  p i  查看变量i的值
-continue  继续执行断点后续指令
-quit   推出当前调试
-display i 跟踪变量
+
+# 设置参数
+set args 10 20
+# 显示参数
+show args
+
+# 推出当前调试
+quit/q
+
+# 获取帮助信息 
+help
+# 列出源代码
+list/l
+list 20   从指定行开始显示
+l/回车    继续显示下面的代码
+list main.c:5
+list main.c:main  # 显示main.c的main函数
+show list/listsize # 显示行数
+set list/listsize  # 设置行数
+
+
+# 设置断点
+break/b  9  # 在第九行设置断点
+b 函数名
+b 文件名:行号
+info/i  b  # 打印断点信息
+delete 行号  # 删除断点
+disable 行号  # 设置断点无效
+enable  行号  # 设置断点生效
+# 设置条件断点
+break 10 if i = 5 # 如果 i=5 在第十行设置断点
+
+# 运行程序
+run/r   # 运行程序（遇到断点暂停）
+start   # 运行程序（程序停在第一行）
+n/next # 下一条指令（会越过函数）
+s/step # 下一条指令(会进入函数)
+continue  # 继续执行断点后续指令（直到遇到下一个断点）
+finish # 跳出函数
+until  # 跳出循环
+# 变量操作
+p/print  p i  # 查看变量i的值
+display i # 跟踪变量i
+undisplay i # 取消跟踪变量
 ```
 
-## 其他
+
+
+# 标准C库IO函数和linux系统IO函数
+
+![image-20240313150517118](./linux基础.assets/image-20240313150517118.png)
+
+
+
+
+
+# 虚拟地址空间
+
+<img src="./linux基础.assets/image-20240313151020566.png" alt="image-20240313151020566" style="zoom:67%;" />
+
+# 文件描述符
+
+文件描述符表本质是一个数组，前三个数字0、1、2固定后面可看作为文件编号方便打开文件，默认大小为1024字节
+
+<img src="./linux基础.assets/image-20240313152708170.png" alt="image-20240313152708170" style="zoom:67%;" />
+
+
+
+# Linux系统IO函数
+
+man 2      Linux系统函数
+
+man 3      标准C库IO函数
+
+
+
+## 打开文件
+
+**`int open(const char *pathname, int flags);`**
+
++ 作用：打开一个已经存在的文件
+
++ 参数：
+  + pathname：要打开的文件路径
+  + flags：对文件操作的权限设置（还有其他设置）
+    + 必选项：O_RDONLY 只读， O_WRONLY 只写， O_RDWR 读写
+    + 可选项：O_CREAT 文件不存在，创建新文件
+
+
++ 返回值：如果成功返回一个新的文件描述符；如果失败返回-1
+
+
+
+**`void perror(const char *s);`**
+
++ 作用：打印 errno 对应的错误描述
+
++ 参数：s：用户描述，比如hello，最终输出的内容是hello:xxx(实际的错误描述）
+
++ 返回值：errno 属于Linux系统函数库，库里面的一个全局变量，记录的是最近的错误号，返回对应的 errno 错误描述
+
+
+
+**`int open(const char *pathname,int flags, mode_t mode);`**
+
++ 作用：打开一个已经存在的文件
++ 参数：
+  + pathname：要打开的文件路径
+  + flags：对文件操作的权限设置（还有其他设置）
+    + 必选项：O_RDONLY 只读， O_WRONLY 只写， O_RDWR 读写
+    + 可选项：O_CREAT 文件不存在，创建新文件
+  + mode：八进制的数，表示创建出的新的文件的操作权限，最终权限为 mode & ~umask
+            ，umask 的作用就是抹去某些权限，调用umask 函数可设定
++ 返回值：如果成功返回一个新的文件描述符，如果失败
+
+
+
+**`int close(int fd);`**
+
+- **作用**：关闭文件描述符（养成每打开一次文件匹配一个此函数的习惯）
+- **参数**：`fd`：文件描述符
+- **返回值**：如果成功返回0，如果失败返回-1
+
+
+
+## read & write
+
+**`ssize_t read(int fd, void *buf, size_t count);`**
+
++ 作用：读取指定文件
++ 参数：
+	+ fd：文件描述符，open得到的，通过这个文件描述符操作某个文件
+	+ buf：需要读取数据存放的地方，数组的地址（传出参数)
+	+ count：要读的数据的实际的大小
++ 返回值：如果成功大于0返回实际读取到的字节数，等于0表示文件已经读取完毕；如果失败返回-1并设置errno
+
+
+
+## lseek函数
+
+**`off_t lseek(int fd, off_t offset, int whence);`**
+
++ 作用：1.移动文件指针到文件头lseek(fd,0，SEEK_SET);
+              2.获取当前文件指针的位置lseek(fd，0，SEEK_CUR);
+              3.获取文件长度lseek(fd,0，SEEK_END);
+              4.拓展文件的长度（如：当前文件10b，110b，增加了100个字节）lseek(fd,100,SEEK_END);
+
++ 参数：
+  + fd：文件描述符，open得到的，通过这个文件描述符操作某个文件
+  + offset：偏移量
+  + whence：
+    + SEEK SET 设置文件指针的偏移量
+    + SEEK CUR 设置偏移量：当前位置 + 第二个参数offset的值
+    + SEEK END 设置偏移量：文件大小 + 第二个参数offset的值
+          
+
++ 返回值：返回文件指针的位置
+
+**拓展文件长度**
+
+```c
+#include <sys/types.h>
+#include <sys/stat.h>
+#include <fcntl.h>
+#include <stdio.h>
+#include <unistd.h>
+
+int main()
+{
+    int fd = open("hello.text", O_RDWR);
+    if (fd == -1)
+    {
+        perror("open");
+        return -1;
+    }
+
+    // 扩展文件的长度
+    lseek(fd, 100, SEEK_END);
+
+    // 为方便显示录入数据后的变化，写入空字符填满并增加1字节
+    write(fd, " ", 1);
+    
+    // 关闭文件
+    close(fd);
+    return 0;
+}
+```
+
+
+
+## stat & lstat函数
+
+**`int stat(const char *pathname, struct stat statbuf);`**
+
++ 作用：获取一个文件相关的一些信息
+
++ 参数：
+  + pathname：操作的文件的路径
+  + statbuf：结构体变量，传出参数，用于保存获取到的文件的信息
++ 返回值：如果成功返回0；如果失败返回-1并设置errno
+
+
+
+**stat结构体**
+
+```c
+struct stat
+{
+    dev_t      st _dev; // 文件的设备编号
+    ino_t      st_ino; // 节点
+    mode_t     st_mode; // 文件的类型和存取的权限
+    nlink_t    st_nlink; // 连到该文件的硬连接数目
+    uid_t      st_uid; // 用户ID
+    gid_t      st_gid; // 组ID
+    dev_t      st_rdev; // 设备文件的设备编号
+    off_t      st_size; // 文件字节数(文件大小)
+    blksize_t  st_blksize; // 块大小
+    blkcnt_t   st_blocks; // 块数
+    time_t     st_atime; // 最后一次访问时间
+    time_t     st_mtime; // 最后一次修改时间(指内容)
+    time_t     st_ctime; // 最后一次改变时间(指属性)
+};
+
+```
+
+
+
+**st_mode**
+
+<img src="./linux基础.assets/image-20240313222448147.png" alt="image-20240313222448147" style="zoom:67%;" />
+
+
+
+**`int lstat(const char *pathname,struct stat statbuf);`**
+
++ 作用：获取一个软链接文件指向的文件的相关的一些信息
++ 参数：
+	+ pathname：操作的文件的路径
+	+ statbuf：结构体变量，传出参数，用于保存获取到的文件的信息
++ 返回值：如果成功返回0；如果失败返回-1并设置errn
+
+
+
+# 其他
 
  
