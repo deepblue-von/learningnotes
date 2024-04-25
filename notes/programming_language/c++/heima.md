@@ -10,7 +10,7 @@ namespace spaceA {
 using spaceA::g_a;
 
 // 方式3
-using namespace spaceA
+using namespace spaceA;
 
 int main()
 {	
@@ -19,6 +19,101 @@ int main()
     return 0
 }
 ```
+
+## 命名空间与多文件编译
+
+`associative.h`
+
+```cpp
+#ifndef ASSOCIATE__h_
+#define ASSOCIATE__h_
+
+#include <cstdio>
+#include <cstdlib>
+#include <ctime>
+#include <exception>
+#include <iostream>
+#include <set>
+#include <string>
+#include <algorithm>
+#include <map>
+namespace jj07 {
+    long get_a_target_long();
+    void test_multimap(long & value);
+}
+
+namespace jj06 {
+    std::string get_a_target_string(long & value);
+    void test_multiset(long & value);
+}
+
+#endif
+```
+
+`associative.cpp`
+
+```cpp
+#include "associative.h"
+using std::cout;
+using std::endl;
+
+
+namespace jj07 {
+
+long get_a_target_long() {
+    return rand();
+}
+void test_multimap(long& value) {
+    cout << "\ntest_multimap()......\n";
+    std::multimap<long, std::string> c;
+    char buf[10];
+    clock_t timeStart = clock();
+    for(long i = 0; i < value; ++i) {
+        try {
+            snprintf(buf, 10, "%d", rand());
+            c.insert(std::pair<long, std::string>(i, buf));
+        } catch(std::exception & p) {
+            cout << "i = " << " " << p.what() << endl;
+            abort();
+        }                                                                                                                       	}                                                                                                                               cout << "milli-seconds : " << (clock() - timeStart) << endl;
+    cout << "multimap.size() = " << c.size() << endl;
+    cout << "multimap.max_size() = " << c.max_size() << endl;
+    long target = get_a_target_long();
+    timeStart = clock();
+    auto pItem = c.find(target);
+    cout << "c.find(), milli-seconds : " << (clock() - timeStart) << endl;
+    if(pItem != c.end())
+        cout << "found, value = " << (*pItem).second << endl;
+    else
+        cout << "not found!" << endl;
+}
+} 
+```
+
+`main.cpp`
+
+```cpp
+#include "associative.h"
+
+int main(int argc, char * argv[]) {
+    long value = 1000000;
+    jj07::test_multimap(value);
+
+    return 0;
+}
+```
+
+**编译：**
+
+```shell
+g++ main.cpp associative.cpp -o main
+```
+
+
+
+
+
+
 
 
 
@@ -319,6 +414,7 @@ int main()
 
 
 // 函数的调用可以作为左值
+//静态局部变量： 静态局部变量存储在静态存储区中，其生命周期与程序的运行周期相同。因此，虽然静态局部变量仍然在函数调用结束后存在，但需要注意静态局部变量可能会引入线程安全性和并发问题。
 int &test01() {
     static int a = 10;
     return a;
@@ -5103,11 +5199,19 @@ int main() {
 
 # 关于读写，输入输出
 
-![image-20231206134858512](heima.assets/image-20231206134858512.png)
+==**输入输出是相对于当前程序来说的**==
+
+在c++中，“读取”和“写入”通常指的是从文件（或者其他数据源）中读取数据或将数据写入文件（或者其他数据目标）
+
++ 读取：指从文件或者其他数据源中获取数据，并将其放入程序中使用。在c++中，使用文件流（“ifstream”）来读取文件中的数据
++ 写入：指将程序中的数据写入文件或其他数据目标。在c++中该使用文件流（“ofstream”）来将数据写入文件
+
+另一方面，“输入”和“输出”通常指的是程序与用户或另一个程序之间的交互
+
++ 输入：指从用户或其他程序获取数据，并将其放入程序中使用。在c++中使用输入流（“cin”）从用户输入中获取数据
++ 输出：指将程序中的数据发送到屏幕或其他输出目标，使其可见或可用于其他的目的。在c++中使用输出流（“cout”）将数据输出到屏幕上
 
 
-
-![image-20231206162858137](heima.assets/image-20231206162858137.png)
 
 
 
