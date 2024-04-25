@@ -32,7 +32,7 @@ git config --global user.email 24736743@qq.com   #邮箱
 
 
 
-### git基本命令
+### it基本命令
 
 ```git
 # 显示工作区和暂存区的状态
@@ -239,9 +239,7 @@ ll
 vim id_rsa.pub
 ```
 
-<img src="C:\Users\haojiangwei\AppData\Roaming\Typora\typora-user-images\image-20240307144619156.png" alt="image-20240307144619156"  />
-
-
+![image-20240425215019561](git.assets/image-20240425215019561.png)
 
 将密钥复制到github
 
