@@ -411,7 +411,7 @@ chmod 471 file.c
 
 ```shell
 chown user1 a.c  
-chown user1:group1 a,c  修改所有者和用户组
+chown user1:group1 a.c  修改所有者和用户组
 ```
 
 ### 查找文件find
@@ -2754,11 +2754,11 @@ int main(){
 
 **`void *mmap(void *addr, size t length, int prot, int flags, int fd, off_t offset);`**
 
-+ 作用：将一个文件或者设备的数据映射到内存中
++ 作用：<span style="color:red">将一个文件或者设备的数据映射到内存中</span>
 + 参数：
-	+ addr：NULL，由内核指定
-	+ length ：要映射的数据的长度，这个值不能为0。建议使用文件的长度，获取文件的长度：stat() 、lseek()
-	+ prot：对申请的内存映射区的操作权限，要操作映射内存，必须要有读的权限（常用：PROT_READ、PROT_READ | PROT_WRITE）
+	+ addr：==NULL，由内核指定==
+	+ length ：要映射的数据的长度，这个值不能为0。==建议使用文件的长度==，获取文件的长度：stat() 、lseek()
+	+ prot：对申请的内存映射区的操作权限，==要操作映射内存，必须要有读的权限==（常用：PROT_READ、PROT_READ | PROT_WRITE）
 	  + PROT_EXEC：可执行权限
 	  + PROT_READ：读权限
 	  + PROT_WRITE：写权限
@@ -2785,7 +2785,7 @@ int main(){
 + 参数：
 	+ addr：要释放内存的首地址
 	+ length：要释放的数据的长度（内存大小），这个值不能为0。建议使用文件的长度，获取文件的长度：stat() 、lseek()
-+ 返回值：如果成功返回0；如果失败返回-1，并设置errno
++ 返回值：如果成功返回0；如果失败返回-1，并设置errno````````````````````````````````````````````
 
 ### 使用内存映射实现进程间通信
 
@@ -2801,7 +2801,7 @@ int main(){
   + 进程2：通过磁盘文件创建内存映射区，得到一个操作这块内存的指针
   + 使用内存映射区通信
 
-注意：内存映射区通信是非阻塞的
+<span style="color:red">注意：内存映射区通信是非阻塞的</span>
 
 **有关系进程通信**
 
@@ -2819,11 +2819,11 @@ int main()
 {
     // 1.打开一个文件
     int fd = open("test.txt", O_RDWR);
-    int size = lseek(fd, 0, SEEK_END); // 获取文件大小
+    int size = lseek(fd, 0, SEEK_END); // 获取文件大小  从文件的末尾偏移0其实就是获得文件的大小
 
     // 2.创建内存映射
     void *ptr = mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_SHARED, fd, 0);
-    if (ptr == MAP_FAILED)
+    if (ptr == MAP_FAILED)   // #define MAP_FAILED ((void *) -1)
     {
         perror("mmap");
         exit(0);
@@ -2857,7 +2857,9 @@ int main()
 }
 ```
 
-
+> if (ptr == MAP_FAILED)   // #define MAP_FAILED ((void *) -1)
+>
+> 这里的 `((void *) -1)` 是一个类型转换，它将整数 `-1` 转换为一个 `void*` 类型的指针。这种转换是合法的，因为 C 标准允许将整数值转换为指针类型，通这样会得到一个最大的无效地址
 
 **内存映射相关问题**
 
@@ -3435,7 +3437,7 @@ int main(){
 
 
 
-
+# 多线程和线程同步
 
 
 

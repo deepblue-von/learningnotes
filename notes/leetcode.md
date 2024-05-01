@@ -305,3 +305,31 @@ vector<int> findAnagrams(string s, string p) {
 }
 ```
 
+# 排序
+
+## 快速排序
+
+```c++
+void quicksort(string & s, int low, int high) {
+    if (low < high) {
+        char pivot = s[low];
+        int i = low;
+        int j = high;
+
+        while (i < j) {
+            while (i < j && s[j] > pivot) j--;
+            s[i] = s[j];
+            if (i < j) i++;
+
+            while (i < j && s[i] < pivot) i++;
+            s[j] = s[i];
+            if (i < j) j--;
+        }
+
+        s[i] = pivot;
+        quicksort(s, low, i - 1);
+        quicksort(s, i + 1, high);
+    }
+}
+```
+
